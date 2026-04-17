@@ -1,12 +1,11 @@
 "use client";
 
 import { Header } from "./components/Header";
-import LogoAdipa from "./assets/logo-adipa.svg";
 
 export default function Home() {
   return (
     <Header
-      logoSrc={LogoAdipa}
+      logoSrc="/assets/logo-adipa.svg"
       onSearch={(value) => console.log("search:", value)}
       onLogin={() => console.log("login")}
       onRegister={() => console.log("register")}

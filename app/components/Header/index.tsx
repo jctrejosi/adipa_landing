@@ -1,8 +1,9 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { Search, ShoppingCart, Menu } from "lucide-react";
-import Image from "next/image";
+import { Search, ShoppingCart, Menu, User, UserPlus, X } from "lucide-react";
 import styles from "./styles.module.css";
+import { useState } from "react";
 
 type HeaderProps = {
   logoSrc: string;
@@ -30,6 +31,8 @@ export const Header = ({
   onCartClick,
   cartCount = 0,
 }: HeaderProps) => {
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+
   return (
     <header className={styles.header}>
       {/* logo */}
@@ -40,18 +43,16 @@ export const Header = ({
         </button>
 
         <a href={logoHref}>
-          <Image
-            src={logoSrc}
-            alt="logo"
-            width={120}
-            height={36}
-            style={{ height: "36px", width: "auto" }}
-          />
+          <img src={logoSrc} alt="logo" className={styles.logo} />
         </a>
       </div>
 
       {/* buscador */}
-      <div className={styles.searchContainer}>
+      <div
+        className={`${styles.searchContainer} ${
+          isSearchOpen ? styles.searchOpen : ""
+        }`}
+      >
         <input
           type="text"
           placeholder={searchPlaceholder}
@@ -62,32 +63,52 @@ export const Header = ({
             }
           }}
         />
+
         <button
           className={styles.searchButton}
-          onClick={(e) => {
-            const input = e.currentTarget.previousSibling as HTMLInputElement;
-            onSearch?.(input.value);
+          onClick={() => {
+            if (!isSearchOpen) {
+              setIsSearchOpen(true);
+              return;
+            }
           }}
         >
           <Search size={18} />
         </button>
+
+        {/* botón cerrar */}
+        {isSearchOpen && (
+          <button
+            className={styles.closeButton}
+            onClick={() => setIsSearchOpen(false)}
+          >
+            <X size={20} />
+          </button>
+        )}
       </div>
 
       {/* acciones */}
-      <div className={styles.actions}>
-        <button className={styles.login} onClick={onLogin}>
-          Iniciar sesión
-        </button>
+      {!isSearchOpen && (
+        <div className={styles.actions}>
+          {/* login */}
+          <button className={styles.login} onClick={onLogin}>
+            <span className={styles.textDesktop}>Iniciar sesión</span>
+            <User className={styles.iconMobile} />
+          </button>
 
-        <button className={styles.register} onClick={onRegister}>
-          Regístrate
-        </button>
+          {/* register */}
+          <button className={styles.register} onClick={onRegister}>
+            <span className={styles.textDesktop}>Regístrate</span>
+            <UserPlus className={styles.iconMobile} />
+          </button>
 
-        <button className={styles.cart} onClick={onCartClick}>
-          <ShoppingCart size={20} />
-          {cartCount > 0 && <span className={styles.badge}>{cartCount}</span>}
-        </button>
-      </div>
+          {/* carrito */}
+          <button className={styles.cart} onClick={onCartClick}>
+            <ShoppingCart size={20} />
+            {cartCount > 0 && <span className={styles.badge}>{cartCount}</span>}
+          </button>
+        </div>
+      )}
     </header>
   );
 };
