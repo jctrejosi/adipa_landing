@@ -1,34 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import styles from "./styles.module.css";
+import { FiltersProps } from "./types";
 
-type RankingOption = {
-  label: string;
-  value: string;
-  icon?: string;
-};
-
-type FilterOption = {
-  label: string;
-  value: string;
-};
-
-type FilterGroup = {
-  title: string;
-  options: FilterOption[];
-};
-
-type Props = {
-  rankings: RankingOption[];
-  groups: FilterGroup[];
-  onChange?: (data: {
-    ranking: string;
-    filters: Record<string, string[]>;
-  }) => void;
-};
-
-export const Filters = ({ rankings, groups, onChange }: Props) => {
+export const Filters = ({ rankings, groups, onChange }: FiltersProps) => {
   const [selectedRanking, setSelectedRanking] = useState<string>("*");
   const [selectedFilters, setSelectedFilters] = useState<
     Record<string, string[]>
@@ -75,47 +50,69 @@ export const Filters = ({ rankings, groups, onChange }: Props) => {
   };
 
   return (
-    <div className={styles.container}>
+    <div className="w-full text-[13px] md:text-[14px]">
       {/* rankings (radio) */}
-      <div className={styles.rankings}>
+      <div className="mb-5 flex flex-col gap-2">
         {rankings.map((item) => (
-          <label key={item.value} className={styles.radio}>
+          <label
+            key={item.value}
+            className="flex cursor-pointer items-center gap-2 text-[var(--text-color,#13013f)]"
+          >
             <input
               type="radio"
               name="rankings"
               value={item.value}
               checked={selectedRanking === item.value}
               onChange={() => handleRankingChange(item.value)}
-              className={styles.radioInput}
+              className="hidden"
             />
+
             <span
-              className={
-                selectedRanking === item.value ? styles.active : styles.label
-              }
+              className={`cursor-pointer transition-colors duration-200 ${
+                selectedRanking === item.value
+                  ? "font-semibold text-[var(--primary-color,#704efd)]"
+                  : "text-[var(--text-color,#13013f)]"
+              }`}
             >
               {item.label}
             </span>
 
             {item.icon && (
-              <img src={item.icon} className={styles.icon} alt="" />
+              <img src={item.icon} className="h-[18px] w-[18px]" alt="" />
             )}
           </label>
         ))}
       </div>
 
       {/* header filtros */}
-      <div className={styles.header}>
-        <h4>Filtros</h4>
-        <button onClick={clearAll}>Borrar filtros</button>
+      <div className="mb-3 flex items-center justify-between">
+        <h4 className="m-0 font-semibold text-[var(--text-color,#13013f)]">
+          Filtros
+        </h4>
+
+        <button
+          onClick={clearAll}
+          className="appearance-none border-0 bg-[#f3f4ff] px-0 py-0 text-[12px] text-[#704efd] cursor-pointer"
+        >
+          Borrar filtros
+        </button>
       </div>
 
       {/* seleccionados */}
-      <div className={styles.selecteds}>
+      <div className="mb-4 flex flex-wrap gap-2">
         {Object.entries(selectedFilters).map(([group, values]) =>
           values.map((val) => (
-            <div key={val} className={styles.tag}>
-              {val}
-              <span onClick={() => removeFilter(group, val)}>×</span>
+            <div
+              key={`${group}-${val}`}
+              className="flex items-center gap-1.5 rounded-[6px] bg-[var(--text-color,#13013f)] px-[10px] py-[6px] text-[11px] md:text-[12px] text-white"
+            >
+              <span>{val}</span>
+              <span
+                onClick={() => removeFilter(group, val)}
+                className="cursor-pointer select-none"
+              >
+                ×
+              </span>
             </div>
           ))
         )}
@@ -123,27 +120,31 @@ export const Filters = ({ rankings, groups, onChange }: Props) => {
 
       {/* groups */}
       {groups.map((group) => (
-        <div key={group.title} className={styles.group}>
+        <div key={group.title} className="mb-4">
           <div
-            className={styles.groupHeader}
+            className="mb-2 flex cursor-pointer items-center justify-between font-semibold text-[var(--text-color,#13013f)]"
             onClick={() => toggleGroup(group.title)}
           >
-            {group.title}
+            <span>{group.title}</span>
             <span>{openGroups[group.title] ? "▲" : "▼"}</span>
           </div>
 
           {openGroups[group.title] && (
-            <div className={styles.options}>
+            <div className="flex flex-col gap-1.5">
               {group.options.map((opt) => (
-                <label key={opt.value} className={styles.checkbox}>
+                <label
+                  key={opt.value}
+                  className="flex cursor-pointer items-center gap-1.5 text-[var(--text-muted,#13013f)]"
+                >
                   <input
                     type="checkbox"
                     checked={
                       selectedFilters[group.title]?.includes(opt.value) || false
                     }
                     onChange={() => handleCheckbox(group.title, opt.value)}
+                    className="accent-[var(--primary-color,#6f4ef6)]"
                   />
-                  {opt.label}
+                  <span>{opt.label}</span>
                 </label>
               ))}
             </div>
