@@ -2,7 +2,18 @@
 
 import { Search, ShoppingCart, Menu, User, UserPlus, X } from "lucide-react";
 import { useState } from "react";
-import { HeaderProps } from "./types";
+
+type HeaderProps = {
+  logoSrc: string;
+  logoHref?: string;
+  searchPlaceholder?: string;
+  onSearch?: (value: string) => void;
+  onLogin?: () => void;
+  onMenu?: () => void;
+  onRegister?: () => void;
+  onCartClick?: () => void;
+  cartCount?: number;
+};
 
 export const Header = ({
   logoSrc,
@@ -17,96 +28,133 @@ export const Header = ({
 }: HeaderProps) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
+  const handleSearch = (value: string) => {
+    onSearch?.(value);
+  };
+
   return (
-    <header className="flex items-center justify-between h-[var(--header-height,70px)] px-[var(--header-padding-x,40px)] py-[var(--header-padding-y,10px)] bg-[var(--header-bg,#fff)] max-md:px-[15px] max-md:justify-start relative">
-      {/* logo */}
-      <div className="flex items-center gap-[20px]">
+    <header
+      className="relative flex items-center justify-between h-[70px] px-4 lg:px-10 bg-white"
+      style={
+        {
+          "--primary-color": "#704efd",
+          "--border-color": "#2cb7ff",
+        } as React.CSSProperties
+      }
+    >
+      {/* Logo + menú hamburguesa (solo móvil) */}
+      <div className="flex items-center gap-5">
         <button
           onClick={onMenu}
-          className="hidden max-md:block text-[var(--primary-color,#704efd)]"
+          className="block lg:hidden text-[#704efd]"
+          aria-label="Menú"
         >
           <Menu size={24} />
         </button>
-
         <a href={logoHref}>
           <img
             src={logoSrc}
             alt="logo"
-            className="block object-contain h-[var(--logo-height,36px)] max-md:h-[var(--logo-height-tablet,30px)] max-sm:h-[var(--logo-height-mobile,26px)]"
+            className="h-[30px] lg:h-[36px] w-auto object-contain"
           />
         </a>
       </div>
 
-      {/* search */}
+      {/* Buscador: en escritorio es estático; en móvil se transforma */}
       <div
         className={`
-          flex items-center overflow-hidden border-2 border-[var(--border-color,#2cb7ff)] rounded-[var(--border-radius,5px)]
-          w-[var(--width-search,546px)] h-[var(--width-search,36px)]
-          max-md:absolute max-md:top-0 max-md:left-0 max-md:w-full max-md:h-full max-md:p-[10px] max-md:bg-white max-md:z-10 max-md:border-0 max-md:items-center
-          ${isSearchOpen ? "max-md:flex" : "max-md:flex"}
+          flex items-center
+          lg:border-2 lg:border-[#2cb7ff] lg:rounded-md lg:w-[546px] lg:h-[36px]
+          ${
+            isSearchOpen
+              ? "absolute left-0 top-0 w-full h-full z-20 bg-white px-4 flex items-center gap-2"
+              : "ml-auto mr-4 lg:mx-0"
+          }
         `}
       >
+        {/* Input de búsqueda */}
         <input
           type="text"
           placeholder={searchPlaceholder}
+          className={`
+            flex-1 border-none outline-none text-black text-sm
+            ${
+              isSearchOpen
+                ? "block w-full border-2 border-[#2cb7ff] rounded-md h-[34px] px-3"
+                : "hidden lg:block lg:px-5"
+            }
+          `}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              onSearch?.((e.target as HTMLInputElement).value);
+              handleSearch((e.target as HTMLInputElement).value);
             }
           }}
-          className="
-            flex-1 border-0 outline-none px-[20px] text-black text-[14px]
-            max-md:hidden
-            max-md:w-full max-md:border-2 max-md:border-[var(--border-color,#2cb7ff)] max-md:h-[34px] max-md:block
-          "
         />
 
+        {/* Botón lupa (siempre visible) */}
         <button
+          className="bg-[#2cb7ff] text-white p-2 rounded-md flex items-center justify-center lg:rounded-none lg:rounded-r-md"
           onClick={() => {
-            if (!isSearchOpen) setIsSearchOpen(true);
+            if (!isSearchOpen) {
+              setIsSearchOpen(true);
+              // Opcional: focus automático al input
+              setTimeout(() => {
+                const input = document.querySelector(
+                  'input[type="text"]'
+                ) as HTMLInputElement;
+                input?.focus();
+              }, 0);
+            } else {
+              // Si ya está abierto y se hace clic, se puede buscar el valor actual
+              const input = document.querySelector(
+                'input[type="text"]'
+              ) as HTMLInputElement;
+              if (input) handleSearch(input.value);
+            }
           }}
-          className="flex items-center justify-center bg-[var(--primary-color,#2cb7ff)] px-[12px] py-[8px]"
+          aria-label="Buscar"
         >
           <Search size={18} />
         </button>
 
+        {/* Botón cerrar (solo cuando el buscador está expandido en móvil) */}
         {isSearchOpen && (
           <button
+            className="bg-transparent border-none cursor-pointer flex items-center justify-center text-black"
             onClick={() => setIsSearchOpen(false)}
-            className="ml-2 flex items-center justify-center text-black"
+            aria-label="Cerrar búsqueda"
           >
             <X size={20} />
           </button>
         )}
       </div>
 
-      {/* actions */}
+      {/* Acciones: login, register, carrito */}
       {!isSearchOpen && (
-        <div className="flex items-center gap-[20px] max-md:gap-[10px]">
+        <div className="flex items-center gap-4 lg:gap-5">
           <button
             onClick={onLogin}
-            className="text-[var(--text-color,#1d1d1d)] font-bold flex items-center"
+            className="bg-transparent border-none cursor-pointer text-[#1d1d1d] font-bold"
           >
-            <span className="md:inline hidden">Inicia sesión</span>
-            <User size={18} className="md:hidden" />
+            <span className="hidden lg:inline">Inicia sesión</span>
+            <User className="inline lg:hidden" size={20} />
           </button>
 
           <button
             onClick={onRegister}
-            className="text-[var(--text-color,#1d1d1d)] flex items-center"
+            className="bg-transparent border-none cursor-pointer text-[#1d1d1d]"
           >
-            <span className="md:inline hidden">Regístrate</span>
-            <UserPlus size={18} className="md:hidden" />
+            <span className="hidden lg:inline">Regístrate</span>
+            <UserPlus className="inline lg:hidden" size={20} />
           </button>
 
           <button
             onClick={onCartClick}
-            className="relative text-[var(--cart-color,#704efd)]"
+            className="relative bg-transparent border-none cursor-pointer text-[#704efd]"
           >
             <ShoppingCart size={20} />
-
             {cartCount > 0 && (
-              <span className="absolute -top-2 -right-2 w-5 h-5 flex items-center justify-center rounded-full bg-white text-[var(--badge-color,#704efd)] text-[12px]">
+              <span className="absolute -top-2 -right-2 bg-white text-[#704efd] text-xs w-5 h-5 rounded-full flex items-center justify-center">
                 {cartCount}
               </span>
             )}
