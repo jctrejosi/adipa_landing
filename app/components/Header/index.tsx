@@ -91,7 +91,7 @@ export const Header = ({
         <div className={styles.actions}>
           {/* login */}
           <button className={styles.login} onClick={onLogin}>
-            <span className={styles.textDesktop}>Iniciar sesión</span>
+            <span className={styles.textDesktop}>Inicia sesión</span>
             <User className={styles.iconMobile} />
           </button>
 

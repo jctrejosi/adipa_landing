@@ -134,8 +134,16 @@ export const Navbar = ({ iconWhatsapp }: Props) => {
           ]}
         />
 
-        <span className={styles.link}>Seminarios</span>
-        <span className={`${styles.link} ${styles.bold}`}>Congreso</span>
+        <div className={styles.itemWithBadge}>
+          <span className={`${styles.badge} ${styles.badgeGratis}`}>
+            Gratis
+          </span>
+          <span className={styles.link}>Seminarios</span>
+        </div>
+        <div className={styles.itemWithBadge}>
+          <span className={`${styles.badge} ${styles.badgeNuevo}`}>Nuevo</span>
+          <span className={`${styles.link} ${styles.bold}`}>Congreso</span>
+        </div>
         <span className={styles.link}>Especializaciones</span>
         <span className={styles.link}>Acreditaciones</span>
         <span className={styles.link}>Sesiones Magistrales</span>
