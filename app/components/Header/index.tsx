@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { Search, ShoppingCart, Menu, User, UserPlus, X } from "lucide-react";

@@ -1,0 +1,66 @@
+.wrapper {
+  position: relative;
+}
+
+.trigger {
+  cursor: pointer;
+}
+
+/* simple */
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  padding: 20px 0;
+  background: white;
+  min-width: 220px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  z-index: 20;
+}
+
+/* mega */
+.megaMenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  display: flex;
+  gap: 40px;
+  background: white;
+  padding: 20px 30px;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  z-index: 50;
+}
+
+/* sections */
+.section {
+  display: flex;
+  flex-direction: column;
+  min-width: 160px;
+}
+
+.title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #6c6c6c;
+}
+
+.section a {
+  text-decoration: none;
+  color: #2d2d2d;
+  font-size: 14px;
+  display: block;
+  line-height: 22px;
+  padding: 10px 20px;
+  color: var(--text-item-color,#828282);
+  font-weight: 400;
+  text-decoration: none;
+}
+
+.section a:hover {
+  color: #000;
+}
+
+.bold {
+  font-weight: 600;
+}

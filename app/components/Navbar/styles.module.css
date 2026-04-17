@@ -1,0 +1,71 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--navbar-padding-y, 15px)
+           var(--navbar-padding-x, 30px);
+  background: var(--navbar-bg, #fff);
+  font-size: var(--navbar-font-size, 14px);
+  font-family: var(--font-family, inherit);
+  width: 100%;
+}
+
+/* left */
+.left {
+  display: flex;
+  align-items: center;
+}
+
+.discover {
+  display: flex;
+  align-items: center;
+  gap: var(--discover-gap, 6px);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--discover-color, #2d2d2d);
+  font-weight: var(--discover-font-weight, 500);
+  font-size: var(--discover-font-size, 14px);
+}
+
+/* indicador */
+.whatsapp {
+  color: var(--whatsapp-color, #25d366);
+}
+
+.whatsappIcon {  width: 16px;
+  height: 16px;
+}
+
+.separator {
+  width: 1px;
+  height: 20px;
+  background: var(--separator-color, #000);
+  margin: 0 10px;
+}
+
+/* nav */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: var(--nav-gap, 22px);
+}
+
+.link {
+  align-items: center;
+  display: flex;
+  cursor: pointer;
+  color: var(--link-color, #3a3a3a);
+  font-size: var(--link-font-size, 14px);
+  font-weight: var(--link-font-weight, 400);
+  transition: color 0.2s ease;
+}
+
+.link:hover {
+  color: var(--link-hover-color, #000);
+}
+
+/* destacado */
+.bold {
+  font-weight: var(--bold-font-weight, 600);
+}
