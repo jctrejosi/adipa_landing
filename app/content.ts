@@ -1,3 +1,5 @@
+import { Course } from "./components/CourseList/types";
+
 export const groupsFilter = [
   {
     title: "Área Temática",
@@ -97,7 +99,7 @@ export const rankingFilter = [
   },
 ];
 
-export const coursesData = [
+export const coursesData: Course[] = [
   {
     id: "644911",
     title:

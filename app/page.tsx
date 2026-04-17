@@ -5,7 +5,9 @@ import { Navbar } from "./components/Navbar";
 import { HeroSearch } from "./components/HeroSearch";
 import { Filters } from "./components/Filters";
 import { CourseList } from "./components/CourseList";
+import { ContactForm } from "./components/ContactForm";
 import { coursesData, groupsFilter, rankingFilter } from "./content";
+import { Footer } from "./components/Footer";
 
 export default function Home() {
   return (
@@ -35,6 +37,10 @@ export default function Home() {
           </main>
         </div>
       </div>
+      <div className="w-full bg-[white] flex items-center justify-center py-32">
+        <ContactForm />
+      </div>
+      <Footer />
     </div>
   );
 }

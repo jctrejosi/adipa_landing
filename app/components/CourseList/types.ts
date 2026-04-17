@@ -1,14 +1,14 @@
 export type Course = {
   id: string;
   title: string;
-  description: string;
+  description?: string;
   startDate: string;
   progress?: string;
   rating?: number;
   price: string;
-  originalPrice: number;
-  discount: number;
-  discountedPrice: number;
+  originalPrice?: string;
+  discount?: number;
+  discountedPrice?: number;
   isLive: boolean;
   isInProgress: boolean;
   hours: number;
