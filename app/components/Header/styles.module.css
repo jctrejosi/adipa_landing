@@ -1,0 +1,98 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--header-padding-y, 10px)
+           var(--header-padding-x, 40px);
+  background: var(--header-bg, #fff);
+  height: var(--header-height, 70px);
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  gap: var(--logo-gap, 20px);
+}
+
+.btnMenu {
+  color: var(--primary-color, #2cb7ff);
+}
+
+.logo {
+  height: 40px;
+  width: auto;
+  display: block;
+}
+
+.searchContainer {
+  display: flex;
+  align-items: center;
+  width: var(--width-search, 546px);
+  height: var(--width-search, 36px);
+  border: 2px solid var(--border-color, #2cb7ff);
+  border-radius: var(--border-radius, 5px);
+  overflow: hidden;
+}
+
+.input {
+  flex: 1;
+  border: none;
+  padding: var(--input-padding, 0 20px);
+  outline: none;
+  color: var(--text-color, #000);
+  font-size: var(--input-font-size, 14px);
+}
+
+.searchButton {
+  background: var(--primary-color, #2cb7ff);
+  border: none;
+  padding: var(--button-padding-y, 8px)
+           var(--button-padding-x, 12px);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--gap, 20px);
+}
+
+.login,
+.register,
+.cart {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.cart {
+  position: relative;
+}
+
+.cart {
+  color: var(--cart-color, #704efd);
+}
+
+.login,
+.register {
+  color: var(--text-color, #1d1d1d);
+}
+
+.login {
+  font-weight: var(--login-font-weight, bold);
+}
+
+.badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: var(--badge-bg, white);
+  color: var(--badge-color, #704efd);
+  font-size: var(--badge-font-size, 12px);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
