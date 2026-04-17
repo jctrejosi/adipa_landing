@@ -25,9 +25,9 @@ export default function Home() {
       </div>
       <HeroSearch />
       <div className="bg-white py-4 px-6">
-        <div className="flex flex-col md:flex-row gap-6 items-start">
+        <div className="flex flex-col xl:flex-row gap-6 items-start">
           {/* sidebar */}
-          <aside className="w-full md:w-[285px] md:flex-none">
+          <aside className="w-full xl:w-[285px] xl:flex-none">
             <Filters rankings={rankingFilter} groups={groupsFilter} />
           </aside>
 

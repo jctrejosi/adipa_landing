@@ -88,7 +88,7 @@ export const ContactForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white border border-[#13013f] rounded-xl p-8 space-y-6 w-full max-w-xl"
+      className="bg-white md:border md:border-[#13013f] rounded-xl md:p-8 p-4 space-y-6 w-full max-w-xl"
     >
       {/* header */}
       <div className="space-y-2">
