@@ -41,7 +41,7 @@ export const Home = () => {
 
       <HeroSearch onSearch={setSearch} />
 
-      <div className="bg-white pt-24">
+      <div className="bg-white dark:bg-gray-900 pt-24">
         <div className="max-w-[1240px] mx-auto px-4 md:px-6 lg:px-0">
           <div className="flex flex-col xl:flex-row gap-6 items-start">
             <aside className="w-full xl:w-[285px] xl:flex-none">
@@ -72,7 +72,7 @@ export const Home = () => {
         </div>
       </div>
 
-      <div className="w-full bg-white flex items-center justify-center py-32">
+      <div className="w-full bg-white dark:bg-gray-900 flex items-center justify-center py-32">
         <ContactForm
           title="¿Tienes una idea para un nuevo curso?"
           description="En ADIPA valoramos tus sugerencias..."

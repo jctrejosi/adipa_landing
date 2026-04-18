@@ -64,19 +64,19 @@ export const Filters = ({ rankings, groups, onChange }: FiltersProps) => {
               setShowRankings((prev) => !prev);
               setShowFilters(false);
             }}
-            className="flex w-full items-center justify-between rounded-md border border-gray-300 bg-white px-4 py-2 text-left font-medium text-[var(--text-color,#13013f)] shadow-sm hover:bg-gray-50"
+            className="flex w-full items-center justify-between rounded-md border border-gray-300 bg-white px-4 py-2 text-left font-medium text-[var(--text-color,#13013f)] shadow-sm hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700"
           >
             <span>Rankings</span>
             <span>{showRankings ? "▲" : "▼"}</span>
           </button>
 
           {showRankings && (
-            <div className="absolute left-0 top-full z-20 mt-1 w-full overflow-hidden rounded-md border border-gray-200 bg-white shadow-lg">
+            <div className="absolute left-0 top-full z-20 mt-1 w-full overflow-hidden rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-600 dark:bg-gray-800">
               <div className="flex flex-col gap-0 p-2">
                 {rankings.map((item) => (
                   <label
                     key={item.value}
-                    className="flex cursor-pointer items-center gap-2 rounded-md px-2 py-2 text-[var(--text-color,#13013f)] hover:bg-gray-50"
+                    className="flex cursor-pointer items-center gap-2 rounded-md px-2 py-2 text-[var(--text-color,#13013f)] hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700"
                   >
                     <input
                       type="radio"
@@ -90,8 +90,8 @@ export const Filters = ({ rankings, groups, onChange }: FiltersProps) => {
                     <span
                       className={`cursor-pointer transition-colors duration-200 ${
                         selectedRanking === item.value
-                          ? "font-semibold text-[var(--primary-color,#704efd)]"
-                          : "text-[var(--text-color,#13013f)]"
+                          ? "font-semibold text-[var(--primary-color,#704efd)] dark:text-[#8b6eff]"
+                          : "text-[var(--text-color,#13013f)] dark:text-gray-300"
                       }`}
                     >
                       {item.label}
@@ -118,24 +118,24 @@ export const Filters = ({ rankings, groups, onChange }: FiltersProps) => {
               setShowFilters((prev) => !prev);
               setShowRankings(false);
             }}
-            className="flex w-full items-center justify-between rounded-md border border-gray-300 bg-white px-4 py-2 text-left font-medium text-[var(--text-color,#13013f)] shadow-sm hover:bg-gray-50"
+            className="flex w-full items-center justify-between rounded-md border border-gray-300 bg-white px-4 py-2 text-left font-medium text-[var(--text-color,#13013f)] shadow-sm hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700"
           >
             <span>Filtros</span>
             <span>{showFilters ? "▲" : "▼"}</span>
           </button>
 
           {showFilters && (
-            <div className="absolute left-0 top-full z-20 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg">
+            <div className="absolute left-0 top-full z-20 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-600 dark:bg-gray-800">
               <div className="p-4">
                 <div className="mb-3 flex items-center justify-between">
-                  <h4 className="m-0 font-semibold text-[var(--text-color,#13013f)]">
+                  <h4 className="m-0 font-semibold text-[var(--text-color,#13013f)] dark:text-gray-100">
                     Filtros
                   </h4>
 
                   <button
                     type="button"
                     onClick={clearAll}
-                    className="cursor-pointer border-0 bg-[#f3f4ff] px-0 py-0 text-[12px] text-[#704efd]"
+                    className="cursor-pointer border-0 bg-[#f3f4ff] px-0 py-0 text-[12px] text-[#704efd] dark:bg-gray-700 dark:text-[#8b6eff]"
                   >
                     Borrar filtros
                   </button>
@@ -146,7 +146,7 @@ export const Filters = ({ rankings, groups, onChange }: FiltersProps) => {
                     values.map((val) => (
                       <div
                         key={`${group}-${val}`}
-                        className="flex items-center gap-1.5 rounded-[6px] bg-[var(--text-color,#13013f)] px-[10px] py-[6px] text-[11px] text-white md:text-[12px]"
+                        className="flex items-center gap-1.5 rounded-[6px] bg-[var(--text-color,#13013f)] px-[10px] py-[6px] text-[11px] text-white md:text-[12px] dark:bg-gray-600"
                       >
                         <span>{val}</span>
                         <span
@@ -163,7 +163,7 @@ export const Filters = ({ rankings, groups, onChange }: FiltersProps) => {
                 {groups.map((group) => (
                   <div key={group.title} className="mb-4">
                     <div
-                      className="mb-2 flex cursor-pointer items-center justify-between font-semibold text-[var(--text-color,#13013f)]"
+                      className="mb-2 flex cursor-pointer items-center justify-between font-semibold text-[var(--text-color,#13013f)] dark:text-gray-100"
                       onClick={() => toggleGroup(group.title)}
                     >
                       <span>{group.title}</span>
@@ -175,7 +175,7 @@ export const Filters = ({ rankings, groups, onChange }: FiltersProps) => {
                         {group.options.map((opt) => (
                           <label
                             key={opt.value}
-                            className="flex cursor-pointer items-center gap-1.5 text-[var(--text-muted,#13013f)]"
+                            className="flex cursor-pointer items-center gap-1.5 text-[var(--text-muted,#13013f)] dark:text-gray-300"
                           >
                             <input
                               type="checkbox"
@@ -187,7 +187,7 @@ export const Filters = ({ rankings, groups, onChange }: FiltersProps) => {
                               onChange={() =>
                                 handleCheckbox(group.title, opt.value)
                               }
-                              className="accent-[var(--primary-color,#6f4ef6)]"
+                              className="accent-[var(--primary-color,#6f4ef6)] dark:accent-[#8b6eff]"
                             />
                             <span>{opt.label}</span>
                           </label>
@@ -207,7 +207,7 @@ export const Filters = ({ rankings, groups, onChange }: FiltersProps) => {
           {rankings.map((item) => (
             <label
               key={item.value}
-              className="flex cursor-pointer items-center gap-2 text-[var(--text-color,#13013f)]"
+              className="flex cursor-pointer items-center gap-2 text-[var(--text-color,#13013f)] dark:text-gray-300"
             >
               <input
                 type="radio"
@@ -221,8 +221,8 @@ export const Filters = ({ rankings, groups, onChange }: FiltersProps) => {
               <span
                 className={`cursor-pointer transition-colors duration-200 ${
                   selectedRanking === item.value
-                    ? "font-semibold text-[var(--primary-color,#704efd)]"
-                    : "text-[var(--text-color,#13013f)]"
+                    ? "font-semibold text-[var(--primary-color,#704efd)] dark:text-[#8b6eff]"
+                    : "text-[var(--text-color,#13013f)] dark:text-gray-300"
                 }`}
               >
                 {item.label}
@@ -236,14 +236,14 @@ export const Filters = ({ rankings, groups, onChange }: FiltersProps) => {
         </div>
 
         <div className="mb-3 flex items-center justify-between">
-          <h4 className="m-0 font-semibold text-[var(--text-color,#13013f)]">
+          <h4 className="m-0 font-semibold text-[var(--text-color,#13013f)] dark:text-gray-100">
             Filtros
           </h4>
 
           <button
             type="button"
             onClick={clearAll}
-            className="cursor-pointer border-0 bg-[#f3f4ff] px-0 py-0 text-[12px] text-[#704efd]"
+            className="cursor-pointer border-0 bg-[#f3f4ff] px-0 py-0 text-[12px] text-[#704efd] dark:bg-gray-700 dark:text-[#8b6eff]"
           >
             Borrar filtros
           </button>
@@ -254,7 +254,7 @@ export const Filters = ({ rankings, groups, onChange }: FiltersProps) => {
             values.map((val) => (
               <div
                 key={`${group}-${val}`}
-                className="flex items-center gap-1.5 rounded-[6px] bg-[var(--text-color,#13013f)] px-[10px] py-[6px] text-[11px] text-white md:text-[12px]"
+                className="flex items-center gap-1.5 rounded-[6px] bg-[var(--text-color,#13013f)] px-[10px] py-[6px] text-[11px] text-white md:text-[12px] dark:bg-gray-600"
               >
                 <span>{val}</span>
                 <span
@@ -272,7 +272,7 @@ export const Filters = ({ rankings, groups, onChange }: FiltersProps) => {
           {groups.map((group) => (
             <div key={group.title} className="mb-4">
               <div
-                className="mb-2 flex cursor-pointer items-center justify-between font-semibold text-[var(--text-color,#13013f)]"
+                className="mb-2 flex cursor-pointer items-center justify-between font-semibold text-[var(--text-color,#13013f)] dark:text-gray-100"
                 onClick={() => toggleGroup(group.title)}
               >
                 <span>{group.title}</span>
@@ -284,7 +284,7 @@ export const Filters = ({ rankings, groups, onChange }: FiltersProps) => {
                   {group.options.map((opt) => (
                     <label
                       key={opt.value}
-                      className="flex cursor-pointer items-center gap-1.5 text-[var(--text-muted,#13013f)]"
+                      className="flex cursor-pointer items-center gap-1.5 text-[var(--text-muted,#13013f)] dark:text-gray-300"
                     >
                       <input
                         type="checkbox"
@@ -293,7 +293,7 @@ export const Filters = ({ rankings, groups, onChange }: FiltersProps) => {
                           false
                         }
                         onChange={() => handleCheckbox(group.title, opt.value)}
-                        className="accent-[var(--primary-color,#6f4ef6)]"
+                        className="accent-[var(--primary-color,#6f4ef6)] dark:accent-[#8b6eff]"
                       />
                       <span>{opt.label}</span>
                     </label>

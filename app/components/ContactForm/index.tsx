@@ -69,22 +69,24 @@ export const ContactForm = ({
 
   if (submitted) {
     return (
-      <div className="bg-white border border-[#13013f] rounded-xl p-8 text-center max-w-xl w-full">
+      <div className="bg-white border border-[#13013f] rounded-xl p-8 text-center max-w-xl w-full dark:bg-gray-800 dark:border-gray-600">
         <div className="flex justify-center mb-4">
-          <div className="bg-green-100 p-4 rounded-full border border-green-300">
-            <Check className="text-green-600" size={28} />
+          <div className="bg-green-100 p-4 rounded-full border border-green-300 dark:bg-green-900/50 dark:border-green-700">
+            <Check className="text-green-600 dark:text-green-400" size={28} />
           </div>
         </div>
 
-        <h2 className="text-[#13013f] text-lg font-semibold mb-2">
+        <h2 className="text-[#13013f] text-lg font-semibold mb-2 dark:text-gray-100">
           {successTitle}
         </h2>
 
-        <p className="text-[#13013f]/70 mb-6">{successDescription}</p>
+        <p className="text-[#13013f]/70 mb-6 dark:text-gray-400">
+          {successDescription}
+        </p>
 
         <button
           onClick={handleReset}
-          className="text-[#13013f] hover:underline"
+          className="text-[#13013f] hover:underline dark:text-gray-300"
         >
           {successButtonLabel}
         </button>
@@ -95,20 +97,22 @@ export const ContactForm = ({
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white md:border md:border-[#13013f] rounded-xl md:p-8 p-4 space-y-6 w-full max-w-xl"
+      className="bg-white md:border md:border-[#13013f] rounded-xl md:p-8 p-4 space-y-6 w-full max-w-xl dark:bg-gray-800 dark:md:border-gray-600"
     >
       {/* header */}
       <div className="space-y-2">
-        <h4 className="text-[#13013f] text-xl font-semibold">{title}</h4>
+        <h4 className="text-[#13013f] text-xl font-semibold dark:text-gray-100">
+          {title}
+        </h4>
 
-        <p className="text-[#13013f]/70 text-sm leading-relaxed">
+        <p className="text-[#13013f]/70 text-sm leading-relaxed dark:text-gray-400">
           {description}
         </p>
       </div>
 
       {/* nombre */}
       <div>
-        <label className="text-sm text-[#13013f]">
+        <label className="text-sm text-[#13013f] dark:text-gray-300">
           {nameLabel} <span className="text-red-500">*</span>
         </label>
 
@@ -117,7 +121,7 @@ export const ContactForm = ({
           placeholder={namePlaceholder}
           value={form.name}
           onChange={(e) => setForm({ ...form, name: e.target.value })}
-          className="mt-1 w-full bg-white border border-[#13013f] rounded-md px-3 py-2 text-[#13013f] outline-none focus:ring-2 focus:ring-[#13013f]"
+          className="mt-1 w-full bg-white border border-[#13013f] rounded-md px-3 py-2 text-[#13013f] outline-none focus:ring-2 focus:ring-[#13013f] dark:bg-gray-900 dark:border-gray-600 dark:text-gray-100 dark:focus:ring-gray-500"
         />
 
         {errors.name && (
@@ -127,7 +131,7 @@ export const ContactForm = ({
 
       {/* email */}
       <div>
-        <label className="text-sm text-[#13013f]">
+        <label className="text-sm text-[#13013f] dark:text-gray-300">
           {emailLabel} <span className="text-red-500">*</span>
         </label>
 
@@ -136,7 +140,7 @@ export const ContactForm = ({
           placeholder={emailPlaceholder}
           value={form.email}
           onChange={(e) => setForm({ ...form, email: e.target.value })}
-          className="mt-1 w-full bg-white border border-[#13013f] rounded-md px-3 py-2 text-[#13013f] outline-none focus:ring-2 focus:ring-[#13013f]"
+          className="mt-1 w-full bg-white border border-[#13013f] rounded-md px-3 py-2 text-[#13013f] outline-none focus:ring-2 focus:ring-[#13013f] dark:bg-gray-900 dark:border-gray-600 dark:text-gray-100 dark:focus:ring-gray-500"
         />
 
         {errors.email && (
@@ -146,7 +150,7 @@ export const ContactForm = ({
 
       {/* mensaje */}
       <div>
-        <label className="text-sm text-[#13013f]">
+        <label className="text-sm text-[#13013f] dark:text-gray-300">
           {messageLabel} <span className="text-red-500">*</span>
         </label>
 
@@ -155,12 +159,16 @@ export const ContactForm = ({
           value={form.message}
           maxLength={300}
           onChange={(e) => setForm({ ...form, message: e.target.value })}
-          className="mt-1 w-full bg-white border border-[#13013f] rounded-md px-3 py-2 text-[#13013f] outline-none focus:ring-2 focus:ring-[#13013f] h-28 resize-none"
+          className="mt-1 w-full bg-white border border-[#13013f] rounded-md px-3 py-2 text-[#13013f] outline-none focus:ring-2 focus:ring-[#13013f] h-28 resize-none dark:bg-gray-900 dark:border-gray-600 dark:text-gray-100 dark:focus:ring-gray-500"
         />
 
         <div className="flex justify-between text-xs mt-1">
-          <span className="text-[#13013f]/60">{minMessageLengthLabel}</span>
-          <span className="text-[#13013f]/60">{form.message.length}/300</span>
+          <span className="text-[#13013f]/60 dark:text-gray-400">
+            {minMessageLengthLabel}
+          </span>
+          <span className="text-[#13013f]/60 dark:text-gray-400">
+            {form.message.length}/300
+          </span>
         </div>
 
         {errors.message && (
@@ -171,7 +179,7 @@ export const ContactForm = ({
       {/* botón */}
       <button
         type="submit"
-        className="w-full flex items-center justify-center gap-2 bg-[#7d61f1] text-white py-2 rounded-md hover:opacity-90 transition"
+        className="w-full flex items-center justify-center gap-2 bg-[#7d61f1] text-white py-2 rounded-md hover:opacity-90 transition dark:bg-[#5a3dd4]"
       >
         <Send size={16} />
         {submitButtonLabel}

@@ -1,6 +1,15 @@
 "use client";
 
-import { Search, ShoppingCart, Menu, User, UserPlus, X } from "lucide-react";
+import {
+  Search,
+  ShoppingCart,
+  Menu,
+  User,
+  UserPlus,
+  X,
+  Sun,
+  Moon,
+} from "lucide-react";
 import { useState } from "react";
 
 type HeaderProps = {
@@ -27,6 +36,12 @@ export const Header = ({
   cartCount = 0,
 }: HeaderProps) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isDark, setIsDark] = useState(false);
+
+  const toggleDark = () => {
+    document.documentElement.classList.toggle("dark");
+    setIsDark((prev) => !prev);
+  };
 
   const handleSearch = (value: string) => {
     onSearch?.(value);
@@ -34,7 +49,7 @@ export const Header = ({
 
   return (
     <header
-      className="relative flex items-center justify-between h-[70px] px-4 lg:px-10 bg-white"
+      className="relative flex items-center justify-between h-[70px] px-4 lg:px-10 bg-white dark:bg-gray-900"
       style={
         {
           "--primary-color": "#704efd",
@@ -46,7 +61,7 @@ export const Header = ({
       <div className="flex items-center gap-5">
         <button
           onClick={onMenu}
-          className="block lg:hidden text-[#704efd]"
+          className="block lg:hidden text-[#704efd] dark:text-[#8b6eff]"
           aria-label="Menú"
         >
           <Menu size={24} />
@@ -55,7 +70,7 @@ export const Header = ({
           <img
             src={logoSrc}
             alt="logo"
-            className="h-[25px] lg:h-[36px] w-auto object-contain"
+            className="h-[25px] lg:h-[36px] w-auto object-contain dark:brightness-90"
           />
         </a>
       </div>
@@ -67,7 +82,7 @@ export const Header = ({
           lg:border-2 lg:border-[#2cb7ff] lg:rounded-md lg:w-[546px] lg:h-[36px]
           ${
             isSearchOpen
-              ? "absolute left-0 top-0 w-full h-full z-20 bg-white px-4 flex items-center gap-2"
+              ? "absolute left-0 top-0 w-full h-full z-20 bg-white dark:bg-gray-900 px-4 flex items-center gap-2"
               : "ml-auto mr-4 lg:mx-0"
           }
         `}
@@ -77,11 +92,11 @@ export const Header = ({
           type="text"
           placeholder={searchPlaceholder}
           className={`
-            flex-1 border-none outline-none text-black text-sm
+            flex-1 border-none outline-none text-black dark:text-white text-sm
             ${
               isSearchOpen
-                ? "block w-full border-2 border-[#2cb7ff] rounded-md h-[34px] px-3"
-                : "hidden lg:block lg:px-5"
+                ? "block w-full border-2 border-[#2cb7ff] dark:border-[#2cb7ff]/70 rounded-md h-[34px] px-3 bg-white dark:bg-gray-800"
+                : "hidden lg:block lg:px-5 bg-transparent dark:bg-transparent"
             }
           `}
           onKeyDown={(e) => {
@@ -93,7 +108,7 @@ export const Header = ({
 
         {/* Botón lupa */}
         <button
-          className="bg-[#2cb7ff] text-white p-2 rounded-md flex items-center justify-center lg:rounded-none lg:rounded-r-md"
+          className="bg-[#2cb7ff] dark:bg-[#1e8bcb] text-white p-2 rounded-md flex items-center justify-center lg:rounded-none lg:rounded-r-md"
           onClick={() => {
             if (!isSearchOpen) {
               setIsSearchOpen(true);
@@ -117,7 +132,7 @@ export const Header = ({
 
         {isSearchOpen && (
           <button
-            className="bg-transparent border-none cursor-pointer flex items-center justify-center text-black"
+            className="bg-transparent border-none cursor-pointer flex items-center justify-center text-black dark:text-white"
             onClick={() => setIsSearchOpen(false)}
             aria-label="Cerrar búsqueda"
           >
@@ -130,8 +145,15 @@ export const Header = ({
       {!isSearchOpen && (
         <div className="flex items-center gap-4 lg:gap-5">
           <button
+            onClick={toggleDark}
+            className="hidden md:flex items-center justify-center text-[#1d1d1d] dark:text-gray-200"
+            aria-label="Cambiar tema"
+          >
+            {isDark ? <Sun size={16} /> : <Moon size={16} />}
+          </button>
+          <button
             onClick={onLogin}
-            className="bg-transparent border-none cursor-pointer text-[#1d1d1d] font-bold"
+            className="bg-transparent border-none cursor-pointer text-[#1d1d1d] dark:text-gray-200 font-bold"
           >
             <span className="hidden lg:inline">Inicia sesión</span>
             <User className="inline lg:hidden" size={20} />
@@ -139,7 +161,7 @@ export const Header = ({
 
           <button
             onClick={onRegister}
-            className="bg-transparent border-none cursor-pointer text-[#1d1d1d]"
+            className="bg-transparent border-none cursor-pointer text-[#1d1d1d] dark:text-gray-200"
           >
             <span className="hidden lg:inline">Regístrate</span>
             <UserPlus className="inline lg:hidden" size={20} />
@@ -147,11 +169,11 @@ export const Header = ({
 
           <button
             onClick={onCartClick}
-            className="relative bg-transparent border-none cursor-pointer text-[#704efd]"
+            className="relative bg-transparent border-none cursor-pointer text-[#704efd] dark:text-[#8b6eff]"
           >
             <ShoppingCart size={20} />
             {cartCount > 0 && (
-              <span className="absolute -top-2 -right-2 bg-white text-[#704efd] text-xs w-5 h-5 rounded-full flex items-center justify-center">
+              <span className="absolute -top-2 -right-2 bg-white dark:bg-gray-800 text-[#704efd] dark:text-[#8b6eff] text-xs w-5 h-5 rounded-full flex items-center justify-center border border-gray-200 dark:border-gray-600">
                 {cartCount}
               </span>
             )}

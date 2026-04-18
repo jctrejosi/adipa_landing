@@ -25,7 +25,7 @@ const CourseCard = ({
 }: CourseCardProps) => {
   return (
     <div className="group">
-      <article className="flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[#704efd]/20 hover:shadow-xl">
+      <article className="flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[#704efd]/20 hover:shadow-xl dark:border-gray-700 dark:bg-gray-800">
         <div className="relative h-44 w-full overflow-hidden cursor-pointer">
           {course.imageUrl && (
             <img
@@ -54,7 +54,7 @@ const CourseCard = ({
 
         <div className="flex flex-1 flex-col p-4">
           <h3
-            className="mb-2 overflow-hidden text-[14px] font-semibold leading-snug text-[#13013f]"
+            className="mb-2 overflow-hidden text-[14px] font-semibold leading-snug text-[#13013f] dark:text-gray-100"
             style={{
               display: "-webkit-box",
               WebkitLineClamp: 3,
@@ -66,13 +66,16 @@ const CourseCard = ({
           </h3>
 
           {course.teacher && (
-            <div className="mb-3 flex items-center gap-1.5 text-[12px] text-gray-500">
-              <User size={20} className="flex-shrink-0 text-gray-500" />
+            <div className="mb-3 flex items-center gap-1.5 text-[12px] text-gray-500 dark:text-gray-400">
+              <User
+                size={20}
+                className="flex-shrink-0 text-gray-500 dark:text-gray-400"
+              />
               <span className="truncate">{course.teacher}</span>
             </div>
           )}
 
-          <div className="mb-1 flex items-center gap-2 text-[12px] text-gray-500">
+          <div className="mb-1 flex items-center gap-2 text-[12px] text-gray-500 dark:text-gray-400">
             <Calendar size={12} />
             {startLabel} {course.startDate}
             {course.isInProgress && (
@@ -89,19 +92,19 @@ const CourseCard = ({
               </div>
             )}
 
-            <div className="text-[14px] font-semibold text-[#13013f]">
+            <div className="text-[14px] font-semibold text-[#13013f] dark:text-gray-100">
               {formatPrice(course.discountedPrice ?? course.price)}
             </div>
           </div>
 
           {course.originalPrice != null && (
-            <div className="mt-1 text-[12px] text-gray-400 line-through">
+            <div className="mt-1 text-[12px] text-gray-400 line-through dark:text-gray-500">
               {formatPrice(course.originalPrice)}
             </div>
           )}
 
           <div className="mt-3 flex gap-2">
-            <button className="flex-1 rounded-lg border border-[#704efd] py-2 text-[13px] font-semibold text-[#13013f] transition hover:bg-[#704efd] hover:text-white">
+            <button className="flex-1 rounded-lg border border-[#704efd] py-2 text-[13px] font-semibold text-[#13013f] transition hover:bg-[#704efd] hover:text-white dark:text-gray-100">
               {detailButtonLabel}
             </button>
 
@@ -191,7 +194,7 @@ export const CourseList = ({
   return (
     <div className="w-full max-w-[1200px] p-4 font-sans mx-auto">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
-        <h2 className="text-[28px] font-semibold leading-tight text-[#13013f] max-md:text-[22px]">
+        <h2 className="text-[28px] font-semibold leading-tight text-[#13013f] max-md:text-[22px] dark:text-gray-100">
           {title}
         </h2>
 
@@ -199,7 +202,7 @@ export const CourseList = ({
           <button
             type="button"
             onClick={() => setIsDropdownOpen((v) => !v)}
-            className="flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-[#13013f] transition hover:border-[#704efd] hover:bg-[#f8f9ff]"
+            className="flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-[#13013f] transition hover:border-[#704efd] hover:bg-[#f8f9ff] dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700"
           >
             {sortValue === "*" ? allLabel : selectedSort?.label ?? allLabel}
             {isDropdownOpen ? (
@@ -210,7 +213,7 @@ export const CourseList = ({
           </button>
 
           {isDropdownOpen && (
-            <div className="absolute right-0 z-20 mt-2 min-w-[160px] overflow-hidden rounded-lg border border-gray-200 bg-white shadow-xl">
+            <div className="absolute right-0 z-20 mt-2 min-w-[160px] overflow-hidden rounded-lg border border-gray-200 bg-white shadow-xl dark:border-gray-600 dark:bg-gray-800">
               {sortOptions.map((opt) => (
                 <button
                   key={opt.value}
@@ -222,7 +225,7 @@ export const CourseList = ({
                   className={`w-full px-4 py-2 text-left text-sm transition ${
                     sortValue === opt.value
                       ? "bg-[#704efd] text-white"
-                      : "text-[#13013f] hover:bg-[#f3f4ff]"
+                      : "text-[#13013f] hover:bg-[#f3f4ff] dark:text-gray-300 dark:hover:bg-gray-700"
                   }`}
                 >
                   {opt.label}
@@ -234,20 +237,23 @@ export const CourseList = ({
       </div>
 
       <div className="mb-6">
-        <div className="flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 py-2 transition focus-within:border-[#704efd]">
-          <Search size={16} className="shrink-0 text-gray-400" />
+        <div className="flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 py-2 transition focus-within:border-[#704efd] dark:border-gray-600 dark:bg-gray-800 dark:focus-within:border-[#704efd]">
+          <Search
+            size={16}
+            className="shrink-0 text-gray-400 dark:text-gray-500"
+          />
           <input
             type="text"
             value={externalSearch}
             onChange={(e) => onSearchChange?.(e.target.value)}
             placeholder={searchPlaceholder}
-            className="w-full bg-transparent text-sm text-[#13013f] outline-none placeholder:text-gray-400"
+            className="w-full bg-transparent text-sm text-[#13013f] outline-none placeholder:text-gray-400 dark:text-gray-100 dark:placeholder:text-gray-500"
           />
           {externalSearch && (
             <button
               type="button"
               onClick={() => onSearchChange?.("")}
-              className="flex items-center justify-center text-gray-400 transition hover:text-[#13013f]"
+              className="flex items-center justify-center text-gray-400 transition hover:text-[#13013f] dark:text-gray-500 dark:hover:text-gray-300"
               aria-label="Limpiar búsqueda"
             >
               <X size={16} />
@@ -269,7 +275,7 @@ export const CourseList = ({
             />
           ))
         ) : (
-          <div className="col-span-full rounded-xl border border-dashed border-gray-300 bg-white p-8 text-center text-sm text-gray-500">
+          <div className="col-span-full rounded-xl border border-dashed border-gray-300 bg-white p-8 text-center text-sm text-gray-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400">
             {noResultsText}
           </div>
         )}
