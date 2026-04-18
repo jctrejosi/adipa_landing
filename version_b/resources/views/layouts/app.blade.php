@@ -16,6 +16,8 @@
         @include('components.header')
         @include('components.navbar')
         @include('components.hero-search')
+        @include('components.filters')
+        @include('components.course-list')
         @include('components.contact-form')
         @include('components.footer')
     </main>
