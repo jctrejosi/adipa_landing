@@ -11,13 +11,13 @@
     ])
 </head>
 <body>
-    @include('components.header')
-    @include('components.navbar')
-    @include('components.hero-search')
-    @include('components.contact-form')
-
     <main>
         @yield('content')
+        @include('components.header')
+        @include('components.navbar')
+        @include('components.hero-search')
+        @include('components.contact-form')
+        @include('components.footer')
     </main>
 
 </body>

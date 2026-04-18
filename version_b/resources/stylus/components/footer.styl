@@ -1,0 +1,261 @@
+.footer
+  background: #3a3f5a
+  color: white
+  font-family: sans-serif
+
+  &__container
+    max-width: 1440px
+    margin: 0 auto
+    padding: 4rem 1rem
+    display: grid
+    grid-template-columns: 1fr
+    gap: 2rem
+
+    @media (min-width: 768px)
+      padding-left: 2rem
+      padding-right: 2rem
+      grid-template-columns: repeat(3, 1fr)
+
+    @media (min-width: 1024px)
+      grid-template-columns: repeat(5, 1fr)
+      gap: 3rem
+      padding: 4rem 2.5rem
+
+  &__logo
+    width: 160px
+    filter: brightness(0) invert(1)
+    margin-bottom: 2rem
+
+  &__countries
+    &-label
+      font-size: 0.75rem
+      font-weight: bold
+      text-transform: uppercase
+      letter-spacing: 0.05em
+      color: #d1d5db
+      display: block
+      margin-bottom: 1rem
+
+    &-list
+      list-style: none
+      padding: 0
+      margin: 0
+      display: flex
+      flex-direction: column
+      gap: 0.75rem
+
+  &__country-item
+    display: flex
+    align-items: center
+    gap: 0.75rem
+    font-size: 0.8125rem
+    font-weight: bold
+    cursor: pointer
+    transition: color 0.2s, transform 0.2s
+
+    &:hover
+      color: #93c5fd
+      .footer__country-name
+        transform: translateX(4px)
+
+  &__country-icon
+    width: 24px
+    display: inline-flex
+    justify-content: center
+
+  &__country-name
+    transition: transform 0.2s
+
+  &__section
+    margin-bottom: 2rem
+
+    &-title
+      font-size: 0.875rem
+      font-weight: bold
+      text-transform: uppercase
+      letter-spacing: 0.1em
+      color: #8494C9
+      border-bottom: 1px solid rgba(255,255,255,0.1)
+      display: inline-block
+      padding-bottom: 0.5rem
+      margin-bottom: 1.25rem
+
+    &-links
+      list-style: none
+      padding: 0
+      margin: 0
+      display: flex
+      flex-direction: column
+      gap: 0.75rem
+
+      li a
+        font-size: 0.75rem
+        font-weight: bold
+        color: #d1d5db
+        text-decoration: none
+        text-transform: uppercase
+        transition: color 0.2s
+
+        &:hover
+          color: white
+
+  &__contact
+    display: flex
+    flex-direction: column
+    gap: 1rem
+    margin-bottom: 1.5rem
+
+    &-item
+      display: flex
+      align-items: flex-start
+      gap: 0.75rem
+      font-size: 0.8125rem
+      color: #d1d5db
+
+      svg
+        flex-shrink: 0
+        color: #93c5fd
+
+      a
+        color: white
+        text-decoration: none
+        font-size: 0.75rem
+        line-height: 1.4
+        &:hover
+          text-decoration: underline
+
+  &__bottom-links
+    display: flex
+    flex-direction: column
+    gap: 0.5rem
+    margin-top: 1rem
+
+  &__bottom-link
+    font-size: 0.75rem
+    font-weight: bold
+    color: #d1d5db
+    text-decoration: underline
+    &:hover
+      color: white
+
+    &--italic
+      font-size: 0.8125rem
+      font-weight: bold
+      color: white
+      text-decoration: none
+      font-style: italic
+      &:hover
+        text-decoration: underline
+
+  &__newsletter
+    background: rgba(255,255,255,0.05)
+    border: 1px solid rgba(255,255,255,0.1)
+    border-radius: 1rem
+    padding: 1.25rem
+    display: flex
+    flex-direction: column
+    height: fit-content
+    min-height: 350px
+
+    &-title
+      font-size: 0.8125rem
+      font-weight: bold
+      text-transform: uppercase
+      margin-bottom: 1rem
+      line-height: 1.3
+
+    &-form
+      display: flex
+      flex-direction: column
+      gap: 0.75rem
+
+    &-button
+      background: #2cb7ff
+      color: white
+      font-weight: bold
+      padding: 0.5rem
+      border-radius: 0.375rem
+      border: none
+      cursor: pointer
+      display: flex
+      align-items: center
+      justify-content: center
+      gap: 0.5rem
+      font-size: 0.875rem
+      transition: background 0.2s
+      margin-top: 0.5rem
+
+      &:hover
+        background: #3b82f6
+
+  &__form-field
+    display: flex
+    flex-direction: column
+    gap: 0.25rem
+
+  &__form-label
+    font-size: 0.625rem
+    font-weight: bold
+    text-transform: uppercase
+    color: #9ca3af
+
+  &__form-input,
+  &__form-select
+    background: white
+    color: black
+    padding: 0.375rem 0.75rem
+    border-radius: 0.375rem
+    border: none
+    outline: none
+    font-size: 0.875rem
+
+  &__bottom-bar
+    background: #3a3f5a
+    border-top: 1px solid rgba(255,255,255,0.1)
+    padding: 1.5rem 0
+
+  &__bottom-container
+    max-width: 1440px
+    margin: 0 auto
+    padding: 0 1rem
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: space-between
+    gap: 1.5rem
+
+    @media (min-width: 768px)
+      flex-direction: row
+      padding-left: 2rem
+      padding-right: 2rem
+
+  &__copyright
+    font-size: 1rem
+    font-weight: 500
+    color: #9ca3af
+    text-align: center
+
+  &__social
+    display: flex
+    gap: 1rem
+    align-items: center
+
+    &-icon
+      width: 2.25rem
+      height: 2.25rem
+      background: white
+      color: #3a3f5a
+      border-radius: 9999px
+      display: inline-flex
+      align-items: center
+      justify-content: center
+      transition: all 0.2s
+
+      &:hover
+        background: #2cb7ff
+        color: white
+        transform: translateY(-2px)
+
+      svg
+        width: 18px
+        height: 18px
