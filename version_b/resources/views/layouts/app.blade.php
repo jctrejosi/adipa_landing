@@ -13,6 +13,7 @@
 <body>
     @include('components.header')
     @include('components.navbar')
+    @include('components.hero-search')
 
     <main>
         @yield('content')

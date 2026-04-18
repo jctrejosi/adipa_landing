@@ -1,4 +1,3 @@
-{{-- resources/views/components/navbar.blade.php --}}
 @php
     $navData = include(resource_path('views/data/navbar.php'));
     $discoverSections = $navData['discoverSections'];

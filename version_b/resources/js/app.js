@@ -1,9 +1,10 @@
 import $ from 'jquery';
 
 import './modules/header';
-import './modules/navbar';
 import { initNavbar } from './modules/navbar';
+import { initHeroSearch } from './modules/hero-search';
 
 $(document).ready(() => {
     initNavbar();
+    initHeroSearch();
 });
