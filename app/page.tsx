@@ -15,6 +15,7 @@ import { applyFilters } from "./helpers/applyFilters";
 
 export const Home = () => {
   const [search, setSearch] = useState("");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [filtersState, setFiltersState] = useState({
     ranking: "*",
     filters: {},
@@ -33,11 +34,14 @@ export const Home = () => {
         onRegister={() => console.log("register")}
         onCartClick={() => console.log("cart")}
         cartCount={2}
+        onMenu={() => setIsMenuOpen(true)}
       />
 
-      <div className="hidden lg:block">
-        <Navbar iconWhatsapp="/assets/icons-whatsapp.svg" />
-      </div>
+      <Navbar
+        iconWhatsapp="/assets/icons-whatsapp.svg"
+        mobileOpen={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+      />
 
       <HeroSearch onSearch={setSearch} />
 
