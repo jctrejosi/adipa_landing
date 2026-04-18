@@ -9,7 +9,7 @@ import {
   DEFAULT_COUNTRIES,
   DEFAULT_SECTIONS,
   DEFAULT_SOCIAL_LINKS,
-} from "./example";
+} from "./data";
 
 // ============================================================
 // Subcomponentes

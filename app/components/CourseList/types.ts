@@ -29,6 +29,8 @@ export type Course = {
   url?: string;
   category?: string;
   modality?: string;
+  areaTematica?: string;
+  isPresale?: boolean;
 };
 
 export type CourseListProps = {

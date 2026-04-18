@@ -14,11 +14,13 @@ export type FilterGroup = {
   options: FilterOption[];
 };
 
+export type FiltersState = {
+  ranking: string;
+  filters: Record<string, string[]>;
+};
+
 export type FiltersProps = {
   rankings: RankingOption[];
   groups: FilterGroup[];
-  onChange?: (data: {
-    ranking: string;
-    filters: Record<string, string[]>;
-  }) => void;
+  onChange?: (value: FiltersState) => void;
 };

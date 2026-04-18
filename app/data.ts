@@ -50,6 +50,7 @@ export const groupsFilter = [
       { label: "Mixta", value: "mixta" },
     ],
   },
+  /*
   {
     title: "Categoría",
     options: [
@@ -80,6 +81,7 @@ export const groupsFilter = [
       },
     ],
   },
+  */
   {
     title: "Rango de Precio",
     options: [
@@ -157,6 +159,7 @@ export const coursesData: Course[] = [
     url: "https://adipa.cl/cursos/abordaje-de-ninieces-y-familias-desde-el-aft-pf/",
     category: "Cursos",
     modality: "En Vivo",
+    areaTematica: "Psicología Social Comunitaria",
   },
   {
     id: "950792",
@@ -179,6 +182,7 @@ export const coursesData: Course[] = [
     url: "https://adipa.cl/cursos/salud-mental-contextos-educativos-estrategias-preventivas-autismo/",
     category: "Cursos",
     modality: "En Vivo",
+    areaTematica: "neurociencias",
   },
   {
     id: "422846",
@@ -242,7 +246,7 @@ export const coursesData: Course[] = [
       "https://adipa.cl/content/uploads/2026/01/portada-adipa-trauma-infantil-en-procesos-judiciales-estrategias-terapeuticas-efectivas-abril-26-portada-adipa.webp",
     url: "https://adipa.cl/cursos/trauma-infantil-procesos-judiciales-estrategias-terapeuticas/",
     category: "Cursos",
-    modality: "En Vivo",
+    modality: "Presencial",
   },
   {
     id: "861701",

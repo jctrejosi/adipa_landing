@@ -42,7 +42,7 @@ export const Header = ({
         } as React.CSSProperties
       }
     >
-      {/* Logo + menú hamburguesa (solo móvil) */}
+      {/* Logo + menú */}
       <div className="flex items-center gap-5">
         <button
           onClick={onMenu}
@@ -55,12 +55,12 @@ export const Header = ({
           <img
             src={logoSrc}
             alt="logo"
-            className="h-[30px] lg:h-[36px] w-auto object-contain"
+            className="h-[25px] lg:h-[36px] w-auto object-contain"
           />
         </a>
       </div>
 
-      {/* Buscador: en escritorio es estático; en móvil se transforma */}
+      {/* Buscador: en escritorio es estático; en móvil se puede abrir*/}
       <div
         className={`
           flex items-center
@@ -91,13 +91,12 @@ export const Header = ({
           }}
         />
 
-        {/* Botón lupa (siempre visible) */}
+        {/* Botón lupa */}
         <button
           className="bg-[#2cb7ff] text-white p-2 rounded-md flex items-center justify-center lg:rounded-none lg:rounded-r-md"
           onClick={() => {
             if (!isSearchOpen) {
               setIsSearchOpen(true);
-              // Opcional: focus automático al input
               setTimeout(() => {
                 const input = document.querySelector(
                   'input[type="text"]'
@@ -105,7 +104,6 @@ export const Header = ({
                 input?.focus();
               }, 0);
             } else {
-              // Si ya está abierto y se hace clic, se puede buscar el valor actual
               const input = document.querySelector(
                 'input[type="text"]'
               ) as HTMLInputElement;
@@ -117,7 +115,6 @@ export const Header = ({
           <Search size={18} />
         </button>
 
-        {/* Botón cerrar (solo cuando el buscador está expandido en móvil) */}
         {isSearchOpen && (
           <button
             className="bg-transparent border-none cursor-pointer flex items-center justify-center text-black"
