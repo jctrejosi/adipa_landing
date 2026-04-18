@@ -1,25 +1,53 @@
-// components/Footer/Footer.tsx
 "use client";
 
 import React, { useState } from "react";
 import { Phone, Mail, MapPin, Send, Globe } from "lucide-react";
-
+import { FooterProps, FooterSection, NewsletterForm } from "./types";
 import {
-  FaFacebookF,
-  FaInstagram,
-  FaYoutube,
-  FaLinkedinIn,
-  FaSpotify,
-  FaTiktok,
-} from "react-icons/fa";
+  DEFAULT_BOTTOM_LINKS,
+  DEFAULT_CONTACT,
+  DEFAULT_COUNTRIES,
+  DEFAULT_SECTIONS,
+  DEFAULT_SOCIAL_LINKS,
+} from "./example";
 
-type NewsletterForm = {
-  name: string;
-  email: string;
-  frequency: string;
-};
+// ============================================================
+// Subcomponentes
+// ============================================================
 
-export const Footer = () => {
+const SectionLinks = ({ title, links }: FooterSection) => (
+  <div className="flex flex-col gap-5">
+    <h4 className="text-[14px] font-bold uppercase tracking-widest border-b border-white/10 pb-2 inline-block text-[#8494C9]">
+      {title}
+    </h4>
+    <ul className="flex flex-col gap-3">
+      {links.map((link, idx) => (
+        <li key={idx}>
+          <a
+            href={link.href || "#"}
+            className="text-xs font-bold text-gray-300 hover:text-white transition-all uppercase"
+          >
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+);
+
+// ============================================================
+// Componente principal
+// ============================================================
+
+export const Footer = ({
+  logoSrc = "https://storage.googleapis.com/statics-files-adipa-cl/dist_compress/dist/img/icons/logo-adipa.svg",
+  countries = DEFAULT_COUNTRIES,
+  sections = DEFAULT_SECTIONS,
+  socialLinks = DEFAULT_SOCIAL_LINKS,
+  contact = DEFAULT_CONTACT,
+  bottomLinks = DEFAULT_BOTTOM_LINKS,
+  copyrightText = "© 2026 ADIPA. Todos los derechos reservados.",
+}: FooterProps) => {
   const [formData, setFormData] = useState<NewsletterForm>({
     name: "",
     email: "",
@@ -42,12 +70,11 @@ export const Footer = () => {
     <footer className="bg-[#3a3f5a] text-white font-sans">
       {/* Main Footer Content */}
       <div className="max-w-[1440px] mx-auto px-4 md:px-8 xl:px-10 py-16">
-        {/* Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-8 xl:gap-12">
           {/* Logo and Countries */}
           <div className="flex flex-col gap-8">
             <img
-              src="https://storage.googleapis.com/statics-files-adipa-cl/dist_compress/dist/img/icons/logo-adipa.svg"
+              src={logoSrc}
               alt="ADIPA"
               className="w-40 brightness-0 invert"
             />
@@ -56,179 +83,37 @@ export const Footer = () => {
                 Estamos presentes en:
               </span>
               <ul className="flex flex-col gap-3">
-                <li className="flex items-center gap-3 text-[13px] font-bold hover:text-blue-300 cursor-pointer transition-colors group">
-                  <span className="w-6 flex justify-center">🇨🇱</span>
-                  <span className="group-hover:translate-x-1 transition-transform">
-                    CHILE
-                  </span>
-                </li>
-                <li className="flex items-center gap-3 text-[13px] font-bold hover:text-blue-300 cursor-pointer transition-colors group">
-                  <span className="w-6 flex justify-center">🇲🇽</span>
-                  <span className="group-hover:translate-x-1 transition-transform">
-                    MÉXICO
-                  </span>
-                </li>
-                <li className="flex items-center gap-3 text-[13px] font-bold hover:text-blue-300 cursor-pointer transition-colors group">
-                  <span className="w-6 flex justify-center">🇨🇴</span>
-                  <span className="group-hover:translate-x-1 transition-transform">
-                    COLOMBIA
-                  </span>
-                </li>
-                <li className="flex items-center gap-3 text-[13px] font-bold hover:text-blue-300 cursor-pointer transition-colors group">
-                  <Globe size={18} className="text-white" />
-                  <span className="group-hover:translate-x-1 transition-transform">
-                    GLOBAL
-                  </span>
-                </li>
+                {countries.map((country) => (
+                  <li
+                    key={country.code}
+                    className="flex items-center gap-3 text-[13px] font-bold hover:text-blue-300 cursor-pointer transition-colors group"
+                  >
+                    <span className="w-6 flex justify-center">
+                      {country.globeIcon ? (
+                        <Globe size={18} className="text-white" />
+                      ) : (
+                        country.flag
+                      )}
+                    </span>
+                    <span className="group-hover:translate-x-1 transition-transform">
+                      {country.name}
+                    </span>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
 
-          {/* Programs & Schools */}
+          {/* Render sections dynamically: first two go into second column, next three into third column */}
           <div className="flex flex-col gap-12">
-            <div className="flex flex-col gap-5">
-              <h4 className="text-[14px] font-bold uppercase tracking-widest border-b border-white/10 pb-2 inline-block text-[#8494C9]">
-                Programas
-              </h4>
-              <ul className="flex flex-col gap-3">
-                <li>
-                  <a
-                    href="#"
-                    className="text-xs font-bold text-gray-300 hover:text-white transition-all uppercase"
-                  >
-                    Cursos
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-xs font-bold text-gray-300 hover:text-white transition-all uppercase"
-                  >
-                    Seminarios
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-xs font-bold text-gray-300 hover:text-white transition-all uppercase"
-                  >
-                    Diplomados
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div className="flex flex-col gap-5">
-              <h4 className="text-[14px] font-bold uppercase tracking-widest border-b border-white/10 pb-2 inline-block text-[#8494C9]">
-                Escuelas
-              </h4>
-              <ul className="flex flex-col gap-3">
-                <li>
-                  <a className="text-xs font-bold text-gray-300 hover:text-white transition-all uppercase cursor-pointer">
-                    Escuela Salud Mental Adultos
-                  </a>
-                </li>
-                <li>
-                  <a className="text-xs font-bold text-gray-300 hover:text-white transition-all uppercase cursor-pointer">
-                    Escuela de Salud Mental Infanto-Juvenil
-                  </a>
-                </li>
-                <li>
-                  <a className="text-xs font-bold text-gray-300 hover:text-white transition-all uppercase cursor-pointer">
-                    Escuela de Psicología Organizacional
-                  </a>
-                </li>
-                <li>
-                  <a className="text-xs font-bold text-gray-300 hover:text-white transition-all uppercase cursor-pointer">
-                    Escuela Psicosocial Jurídica
-                  </a>
-                </li>
-                <li>
-                  <a className="text-xs font-bold text-gray-300 hover:text-white transition-all uppercase cursor-pointer">
-                    Escuela de Educación Neurodesarrollo
-                  </a>
-                </li>
-              </ul>
-            </div>
+            {sections.slice(0, 2).map((section) => (
+              <SectionLinks key={section.title} {...section} />
+            ))}
           </div>
-
-          {/* Resources & Benefits & About */}
           <div className="flex flex-col gap-12">
-            <div className="flex flex-col gap-5">
-              <h4 className="text-[14px] font-bold uppercase tracking-widest border-b border-white/10 pb-2 inline-block text-[#8494C9]">
-                Recursos
-              </h4>
-              <ul className="flex flex-col gap-3">
-                <li>
-                  <a className="text-xs font-bold text-gray-300 hover:text-white transition-all uppercase cursor-pointer">
-                    Noticias
-                  </a>
-                </li>
-                <li>
-                  <a className="text-xs font-bold text-gray-300 hover:text-white transition-all uppercase cursor-pointer">
-                    Glosario
-                  </a>
-                </li>
-                <li>
-                  <a className="text-xs font-bold text-gray-300 hover:text-white transition-all uppercase cursor-pointer">
-                    Podcast Adipados
-                  </a>
-                </li>
-                <li>
-                  <a className="text-xs font-bold text-gray-300 hover:text-white transition-all uppercase cursor-pointer">
-                    Investigaciones
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div className="flex flex-col gap-5">
-              <h4 className="text-[14px] font-bold uppercase tracking-widest border-b border-white/10 pb-2 inline-block text-[#8494C9]">
-                Beneficios
-              </h4>
-              <ul className="flex flex-col gap-3">
-                <li>
-                  <a className="text-xs font-bold text-gray-300 hover:text-white transition-all uppercase cursor-pointer">
-                    Convenios
-                  </a>
-                </li>
-                <li>
-                  <a className="text-xs font-bold text-gray-300 hover:text-white transition-all uppercase cursor-pointer">
-                    Programa Adipartners
-                  </a>
-                </li>
-                <li>
-                  <a className="text-xs font-bold text-gray-300 hover:text-white transition-all uppercase cursor-pointer">
-                    Giftcards
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div className="flex flex-col gap-5">
-              <h4 className="text-[14px] font-bold uppercase tracking-widest border-b border-white/10 pb-2 inline-block text-[#8494C9]">
-                Conoce Adipa
-              </h4>
-              <ul className="flex flex-col gap-3">
-                <li>
-                  <a className="text-xs font-bold text-gray-300 hover:text-white transition-all uppercase cursor-pointer">
-                    Sobre Adipa
-                  </a>
-                </li>
-                <li>
-                  <a className="text-xs font-bold text-gray-300 hover:text-white transition-all uppercase cursor-pointer">
-                    Escuelas
-                  </a>
-                </li>
-                <li>
-                  <a className="text-xs font-bold text-gray-300 hover:text-white transition-all uppercase cursor-pointer">
-                    Docentes
-                  </a>
-                </li>
-                <li>
-                  <a className="text-xs font-bold text-gray-300 hover:text-white transition-all uppercase cursor-pointer">
-                    Prensa
-                  </a>
-                </li>
-              </ul>
-            </div>
+            {sections.slice(2).map((section) => (
+              <SectionLinks key={section.title} {...section} />
+            ))}
           </div>
 
           {/* Contact & Newsletter */}
@@ -239,39 +124,40 @@ export const Footer = () => {
             <div className="flex flex-col gap-4 text-[13px] text-gray-300">
               <div className="flex items-start gap-3">
                 <Phone size={18} className="text-blue-300 shrink-0" />
-                <span>CL +56957253424</span>
+                <span>{contact.phone}</span>
               </div>
               <div className="flex items-start gap-3">
                 <Mail size={18} className="text-blue-300 shrink-0" />
-                <span>info@adipa.cl</span>
+                <span>{contact.email}</span>
               </div>
               <div className="flex items-start gap-3">
                 <MapPin size={18} className="text-blue-300 shrink-0" />
                 <a
-                  href="https://www.google.com/maps/search/?api=1&query=Estoril+120+oficina+414+Las+Condes+Santiago+Chile"
+                  href={contact.addressLink || "#"}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-white transition-colors"
                 >
                   <span className="text-xs leading-tight text-white">
-                    Estoril 120, oficina 414, Las Condes. Santiago de Chile.
+                    {contact.address}
                   </span>
                 </a>
               </div>
             </div>
             <div className="flex flex-col gap-2 mt-4">
-              <a className="text-[13px] font-bold text-white hover:underline cursor-pointer italic">
-                ¡REGALA UNA GIFTCARD!
-              </a>
-              <a className="text-xs font-bold text-gray-300 hover:text-white cursor-pointer underline">
-                ¿Necesitas ayuda psicológica?
-              </a>
-              <a className="text-xs font-bold text-gray-300 hover:text-white cursor-pointer underline">
-                Términos y condiciones
-              </a>
-              <a className="text-xs font-bold text-gray-300 hover:text-white cursor-pointer underline">
-                Centro de ayuda
-              </a>
+              {bottomLinks.map((link, idx) => (
+                <a
+                  key={idx}
+                  href={link.href || "#"}
+                  className={`${
+                    idx === 0
+                      ? "text-[13px] font-bold text-white hover:underline italic"
+                      : "text-xs font-bold text-gray-300 hover:text-white underline"
+                  } cursor-pointer`}
+                >
+                  {link.label}
+                </a>
+              ))}
             </div>
           </div>
 
@@ -279,7 +165,7 @@ export const Footer = () => {
           <div className="bg-white/5 p-5 rounded-2xl border border-white/10 h-fit min-h-[350px] flex flex-col">
             <form onSubmit={handleSubmit} className="flex flex-col gap-3">
               <h4 className="text-[13px] font-bold mb-2 uppercase leading-tight">
-                Newsletter
+                Suscríbete a nuestro Newsletter
               </h4>
               <div className="flex flex-col gap-1">
                 <label className="text-[10px] font-bold uppercase text-gray-400">
@@ -336,68 +222,22 @@ export const Footer = () => {
       </div>
 
       {/* Bottom Bar with Social Icons and Copyright */}
-      <div className="bg-[#3a3f5a] py-6 bg-[#3a3f5a] border-t border-white/10 py-6">
+      <div className="bg-[#3a3f5a] border-t border-white/10 py-6">
         <div className="max-w-[1440px] mx-auto px-4 md:px-8 xl:px-10 flex flex-col md:flex-row items-center justify-between gap-6">
-          {/* Copyright - Right side */}
-          <p className="text-base text-gray-400 font-medium">
-            © 2026 ADIPA. Todos los derechos reservados.
-          </p>
-          {/* Social Icons - Left side as per image */}
+          <p className="text-base text-gray-400 font-medium">{copyrightText}</p>
           <div className="flex items-center gap-4">
-            <a
-              href="https://www.facebook.com/adipa.cl"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-9 h-9 rounded-full bg-white text-[#3a3f5a] flex items-center justify-center hover:bg-[#2cb7ff] hover:text-white transition-all transform hover:-translate-y-1"
-              aria-label="Facebook"
-            >
-              <FaFacebookF size={18} />
-            </a>
-            <a
-              href="https://www.instagram.com/adipa.cl/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-9 h-9 rounded-full bg-white text-[#3a3f5a] flex items-center justify-center hover:bg-[#2cb7ff] hover:text-white transition-all transform hover:-translate-y-1"
-              aria-label="Instagram"
-            >
-              <FaInstagram size={18} />
-            </a>
-            <a
-              href="https://www.youtube.com/channel/UCSx-fxlxiMHExaWwyHT8P8A"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-9 h-9 rounded-full bg-white text-[#3a3f5a] flex items-center justify-center hover:bg-[#2cb7ff] hover:text-white transition-all transform hover:-translate-y-1"
-              aria-label="YouTube"
-            >
-              <FaYoutube size={18} />
-            </a>
-            <a
-              href="https://www.linkedin.com/company/academia-digital-de-psicologia-y-aprendizaje-adipa/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-9 h-9 rounded-full bg-white text-[#3a3f5a] flex items-center justify-center hover:bg-[#2cb7ff] hover:text-white transition-all transform hover:-translate-y-1"
-              aria-label="LinkedIn"
-            >
-              <FaLinkedinIn size={18} />
-            </a>
-            <a
-              href="https://open.spotify.com/show/4mwZlXLYaGdr9WIqiuSHup"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-9 h-9 rounded-full bg-white text-[#3a3f5a] flex items-center justify-center hover:bg-[#2cb7ff] hover:text-white transition-all transform hover:-translate-y-1"
-              aria-label="Spotify"
-            >
-              <FaSpotify size={18} />
-            </a>
-            <a
-              href="https://www.tiktok.com/@somosadipa"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-9 h-9 rounded-full bg-white text-[#3a3f5a] flex items-center justify-center hover:bg-[#2cb7ff] hover:text-white transition-all transform hover:-translate-y-1"
-              aria-label="TikTok"
-            >
-              <FaTiktok size={18} />
-            </a>
+            {socialLinks.map((social, idx) => (
+              <a
+                key={idx}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-9 h-9 rounded-full bg-white text-[#3a3f5a] flex items-center justify-center hover:bg-[#2cb7ff] hover:text-white transition-all transform hover:-translate-y-1"
+                aria-label={social.ariaLabel}
+              >
+                {social.icon}
+              </a>
+            ))}
           </div>
         </div>
       </div>

@@ -2,14 +2,23 @@
 
 import { useState } from "react";
 import { Check, Send } from "lucide-react";
+import { ContactFormProps, FormData } from "./types";
 
-type FormData = {
-  name: string;
-  email: string;
-  message: string;
-};
-
-export const ContactForm = () => {
+export const ContactForm = ({
+  title,
+  description,
+  nameLabel,
+  namePlaceholder,
+  emailLabel,
+  emailPlaceholder,
+  messageLabel,
+  messagePlaceholder,
+  minMessageLengthLabel,
+  submitButtonLabel,
+  successTitle,
+  successDescription,
+  successButtonLabel,
+}: ContactFormProps) => {
   const [form, setForm] = useState<FormData>({
     name: "",
     email: "",
@@ -68,18 +77,16 @@ export const ContactForm = () => {
         </div>
 
         <h2 className="text-[#13013f] text-lg font-semibold mb-2">
-          Mensaje enviado
+          {successTitle}
         </h2>
 
-        <p className="text-[#13013f]/70 mb-6">
-          Te responderemos lo antes posible.
-        </p>
+        <p className="text-[#13013f]/70 mb-6">{successDescription}</p>
 
         <button
           onClick={handleReset}
           className="text-[#13013f] hover:underline"
         >
-          Enviar otro mensaje
+          {successButtonLabel}
         </button>
       </div>
     );
@@ -92,25 +99,22 @@ export const ContactForm = () => {
     >
       {/* header */}
       <div className="space-y-2">
-        <h4 className="text-[#13013f] text-xl font-semibold">
-          ¿Tienes una idea para un nuevo curso?
-        </h4>
+        <h4 className="text-[#13013f] text-xl font-semibold">{title}</h4>
 
         <p className="text-[#13013f]/70 text-sm leading-relaxed">
-          En ADIPA valoramos tus sugerencias. Cuéntanos qué curso te gustaría
-          ver en la plataforma y ayúdanos a crear contenido relevante para la
-          comunidad.
+          {description}
         </p>
       </div>
+
       {/* nombre */}
       <div>
         <label className="text-sm text-[#13013f]">
-          Nombre <span className="text-red-500">*</span>
+          {nameLabel} <span className="text-red-500">*</span>
         </label>
 
         <input
           type="text"
-          placeholder="Tu nombre completo"
+          placeholder={namePlaceholder}
           value={form.name}
           onChange={(e) => setForm({ ...form, name: e.target.value })}
           className="mt-1 w-full bg-white border border-[#13013f] rounded-md px-3 py-2 text-[#13013f] outline-none focus:ring-2 focus:ring-[#13013f]"
@@ -124,12 +128,12 @@ export const ContactForm = () => {
       {/* email */}
       <div>
         <label className="text-sm text-[#13013f]">
-          Email <span className="text-red-500">*</span>
+          {emailLabel} <span className="text-red-500">*</span>
         </label>
 
         <input
           type="email"
-          placeholder="tu@email.com"
+          placeholder={emailPlaceholder}
           value={form.email}
           onChange={(e) => setForm({ ...form, email: e.target.value })}
           className="mt-1 w-full bg-white border border-[#13013f] rounded-md px-3 py-2 text-[#13013f] outline-none focus:ring-2 focus:ring-[#13013f]"
@@ -143,11 +147,11 @@ export const ContactForm = () => {
       {/* mensaje */}
       <div>
         <label className="text-sm text-[#13013f]">
-          Mensaje <span className="text-red-500">*</span>
+          {messageLabel} <span className="text-red-500">*</span>
         </label>
 
         <textarea
-          placeholder="Escribe tu consulta aquí..."
+          placeholder={messagePlaceholder}
           value={form.message}
           maxLength={300}
           onChange={(e) => setForm({ ...form, message: e.target.value })}
@@ -155,7 +159,7 @@ export const ContactForm = () => {
         />
 
         <div className="flex justify-between text-xs mt-1">
-          <span className="text-[#13013f]/60">Mínimo 10 caracteres</span>
+          <span className="text-[#13013f]/60">{minMessageLengthLabel}</span>
           <span className="text-[#13013f]/60">{form.message.length}/300</span>
         </div>
 
@@ -170,7 +174,7 @@ export const ContactForm = () => {
         className="w-full flex items-center justify-center gap-2 bg-[#7d61f1] text-white py-2 rounded-md hover:opacity-90 transition"
       >
         <Send size={16} />
-        Enviar mensaje
+        {submitButtonLabel}
       </button>
     </form>
   );

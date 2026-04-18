@@ -1,4 +1,4 @@
-import { Course } from "./components/CourseList/types";
+import { Course, SortOption } from "./components/CourseList/types";
 
 export const groupsFilter = [
   {
@@ -118,13 +118,21 @@ export const rankingFilter = [
   {
     label: "Ofertas Flash",
     value: "flash_deals",
-    icon: "/icons/flash.webp",
+    icon: "/assets/flash.webp",
   },
   {
     label: "Pre Lanzamiento",
     value: "presale",
-    icon: "/icons/preventa.webp",
+    icon: "/assets/preventa.webp",
   },
+];
+
+export const orderFilter: SortOption[] = [
+  { label: "Todos", value: "*" },
+  { label: "Mayor Precio", value: "price-desc" },
+  { label: "Menor Precio", value: "price-asc" },
+  { label: "Más próximo", value: "prox-asc" },
+  { label: "Menos próximo", value: "prox-desc" },
 ];
 
 export const coursesData: Course[] = [
