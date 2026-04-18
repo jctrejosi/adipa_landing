@@ -22,7 +22,7 @@ export const Navbar = ({ iconWhatsapp }: Props) => {
         <Dropdown
           variant="mega"
           trigger={
-            <button className="flex items-center gap-[6px] text-[#3a3a3a] font-medium text-[var(--discover-font-size,14px)]">
+            <button className="flex items-center gap-[6px] text-[#3a3a3a] font-medium text-[14px]">
               Descubre ADIPA
               <ChevronDown size={14} />
             </button>

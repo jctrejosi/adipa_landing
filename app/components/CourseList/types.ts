@@ -44,6 +44,8 @@ export type CourseListProps = {
   liveLabel?: string;
   inProgressLabel?: string;
   startLabel?: string;
+  externalSearch?: string;
+  onSearchChange?: (value: string) => void;
 };
 
 export type CourseCardProps = {

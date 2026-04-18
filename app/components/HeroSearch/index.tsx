@@ -46,8 +46,11 @@ export const HeroSearch = ({
         {/* search box */}
         <div className="relative w-[min(100%,600px)] mt-[50px] flex items-center gap-[10px] border-b border-[rgba(255,255,255,0.55)] max-md:mt-[30px] max-md:w-[min(100%,560px)] max-sm:w-full max-sm:gap-[10px]">
           {/* caret */}
-          <span className="absolute left-[10px] bottom-[18px] w-[2px] h-[26px] bg-white/95 animate-[blink_1s_step-end_infinite] pointer-events-none max-sm:left-[8px] max-sm:bottom-[16px] max-sm:h-[22px] peer-focus-within:opacity-0 peer-focus-within:animate-none" />
-
+          <span
+            className={`absolute left-[10px] bottom-[18px] w-[2px] h-[26px] bg-white/95 pointer-events-none
+              ${value ? "opacity-0" : "animate-[blink_1s_step-end_infinite]"}
+            `}
+          />
           <input
             value={value}
             onChange={(e) => setValue(e.target.value)}

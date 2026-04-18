@@ -12,37 +12,9 @@ import {
   X,
 } from "lucide-react";
 import { CourseCardProps, CourseListProps, SortValue } from "./types";
+import { formatPrice, normalizeText, parsePrice, parseDate } from "./helpers";
 
-const normalizeText = (value: string) =>
-  value
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
-
-const parsePrice = (priceValue: string | number): number => {
-  if (typeof priceValue === "number") return priceValue;
-
-  const match = priceValue.match(/(\d+(?:\.\d+)?)/);
-  return match ? parseInt(match[1].replace(/\./g, ""), 10) : 0;
-};
-
-const parseDate = (dateStr: string): number => {
-  const parts = dateStr.split("/");
-  if (parts.length !== 3) return 0;
-
-  const [day, month, year] = parts.map(Number);
-  if (!day || !month || !year) return 0;
-
-  return new Date(year, month - 1, day).getTime();
-};
-
-const formatPrice = (value: string | number): string => {
-  if (typeof value === "number") {
-    return `$${value.toLocaleString("es-CL")} CLP`;
-  }
-
-  return value;
-};
+/* subcomponent */
 
 const CourseCard = ({
   course,
@@ -143,6 +115,8 @@ const CourseCard = ({
   );
 };
 
+/* component */
+
 export const CourseList = ({
   courses,
   sortOptions,
@@ -154,18 +128,18 @@ export const CourseList = ({
   inProgressLabel = "• En progreso",
   startLabel = "Inicio :",
   allLabel = "Todos",
+  externalSearch = "",
+  onSearchChange,
 }: CourseListProps) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
   const [sortValue, setSortValue] = useState<SortValue>("*");
 
   const selectedSort =
     sortOptions.find((o) => o.value === sortValue) ?? sortOptions[0];
 
   const filteredCourses = useMemo(() => {
-    const query = normalizeText(searchTerm.trim());
+    const query = normalizeText(externalSearch.trim());
     if (!query) return courses;
-
     return courses.filter((course) => {
       const searchableText = normalizeText(
         [
@@ -178,10 +152,9 @@ export const CourseList = ({
           .filter(Boolean)
           .join(" ")
       );
-
       return searchableText.includes(query);
     });
-  }, [courses, searchTerm]);
+  }, [courses, externalSearch]);
 
   const sortedCourses = useMemo(() => {
     const items = [...filteredCourses];
@@ -265,15 +238,15 @@ export const CourseList = ({
           <Search size={16} className="shrink-0 text-gray-400" />
           <input
             type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            value={externalSearch}
+            onChange={(e) => onSearchChange?.(e.target.value)}
             placeholder={searchPlaceholder}
             className="w-full bg-transparent text-sm text-[#13013f] outline-none placeholder:text-gray-400"
           />
-          {searchTerm && (
+          {externalSearch && (
             <button
               type="button"
-              onClick={() => setSearchTerm("")}
+              onClick={() => onSearchChange?.("")}
               className="flex items-center justify-center text-gray-400 transition hover:text-[#13013f]"
               aria-label="Limpiar búsqueda"
             >

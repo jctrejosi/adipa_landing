@@ -14,6 +14,7 @@ import { coursesData, groupsFilter, orderFilter, rankingFilter } from "./data";
 import { applyFilters } from "./helpers/applyFilters";
 
 export const Home = () => {
+  const [search, setSearch] = useState("");
   const [filtersState, setFiltersState] = useState({
     ranking: "*",
     filters: {},
@@ -38,7 +39,7 @@ export const Home = () => {
         <Navbar iconWhatsapp="/assets/icons-whatsapp.svg" />
       </div>
 
-      <HeroSearch />
+      <HeroSearch onSearch={setSearch} />
 
       <div className="bg-white pt-24">
         <div className="max-w-[1240px] mx-auto px-4 md:px-6 lg:px-0">
@@ -63,6 +64,8 @@ export const Home = () => {
                 startLabel="Inicio :"
                 courses={filteredCourses}
                 sortOptions={orderFilter}
+                externalSearch={search}
+                onSearchChange={setSearch}
               />
             </main>
           </div>
