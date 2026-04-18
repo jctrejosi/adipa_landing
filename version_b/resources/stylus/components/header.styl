@@ -1,0 +1,213 @@
+.site-header
+  position relative
+  display flex
+  align-items center
+  justify-content space-between
+  gap 1rem
+  min-height var(--header-height)
+  padding 0 1rem
+  background var(--header-bg)
+  border-bottom 1px solid var(--header-border)
+  z-index 20
+
+  @media (min-width: 1280px)
+    padding 0 2.5rem
+
+  &__brand
+    display flex
+    align-items center
+    gap 1rem
+    flex 0 0 auto
+
+  &__menu-button
+    display inline-flex
+    align-items center
+    justify-content center
+    width 40px
+    height 40px
+    border 0
+    background transparent
+    color var(--primary-color)
+    cursor pointer
+
+    @media (min-width: 1280px)
+      display none
+
+  &__logo-link
+    display inline-flex
+    align-items center
+
+  &__logo
+    height 25px
+    width auto
+    object-fit contain
+
+    @media (min-width: 1280px)
+      height 36px
+
+  &__search
+    display flex
+    align-items center
+    gap .5rem
+    flex 1 1 auto
+    min-width 0
+
+    @media (min-width: 1280px)
+      flex 0 0 546px
+      height 36px
+      border 2px solid var(--border-color)
+      border-radius .375rem
+      overflow hidden
+
+  &__search-input
+    display none
+    flex 1 1 auto
+    min-width 0
+    height 100%
+    padding 0 .75rem
+    border 0
+    outline 0
+    background transparent
+    color var(--text-color)
+
+    @media (min-width: 1280px)
+      display block
+      padding 0 1.25rem
+
+  &__search-button
+    display inline-flex
+    align-items center
+    justify-content center
+    width 40px
+    height 40px
+    border 0
+    border-radius .375rem
+    background var(--border-color)
+    color #fff
+    cursor pointer
+    flex 0 0 auto
+
+    @media (min-width: 1280px)
+      width 44px
+      height 36px
+      border-radius 0
+
+  &__search-close
+    display none
+    width 40px
+    height 40px
+    border 0
+    background transparent
+    color var(--text-color)
+    cursor pointer
+    flex 0 0 auto
+
+  &__actions
+    display flex
+    align-items center
+    gap .75rem
+    flex 0 0 auto
+
+    @media (min-width: 1280px)
+      gap 1.25rem
+
+  &__theme-button,
+  &__action-button,
+  &__cart-button
+    display inline-flex
+    align-items center
+    justify-content center
+    border 0
+    background transparent
+    color var(--text-color)
+    cursor pointer
+
+  &__theme-button
+    position relative
+    width 24px
+    height 24px
+
+  &__action-button
+    gap .4rem
+    font-weight 700
+
+    @media (max-width: 1279px)
+      width 24px
+      height 24px
+
+  &__action-label
+    display none
+
+    @media (min-width: 1280px)
+      display inline
+
+  &__action-icon
+    display inline-flex
+
+    @media (min-width: 1280px)
+      display none
+
+  &__cart-button
+    position relative
+
+  &__cart-count
+    position absolute
+    top -8px
+    right -8px
+    display inline-flex
+    align-items center
+    justify-content center
+    width 20px
+    height 20px
+    border-radius 999px
+    background #fff
+    color var(--primary-color)
+    border 1px solid var(--header-border)
+    font-size 12px
+    line-height 1
+
+  &__icon
+    width 20px
+    height 20px
+    display block
+
+  &__theme-icon
+    position absolute
+    inset 0
+    margin auto
+
+  &__theme-icon--sun
+    display none
+
+html.dark .site-header__theme-icon--sun
+  display block
+
+html.dark .site-header__theme-icon--moon
+  display none
+
+.site-header--search-open
+  @media (max-width: 1279px)
+    .site-header__search
+      position fixed
+      inset 0
+      z-index 30
+      padding .875rem 1rem
+      background var(--header-bg)
+      border-bottom 1px solid var(--header-border)
+
+    .site-header__search-input
+      display block
+      height 40px
+      padding 0 .875rem
+      border 2px solid var(--border-color)
+      border-radius .375rem
+      background var(--header-bg)
+
+    .site-header__search-button
+      display none
+
+    .site-header__search-close
+      display inline-flex
+
+    .site-header__actions
+      display none

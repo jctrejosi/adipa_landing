@@ -1,6 +1,6 @@
 import $ from 'jquery';
 
-import './modules/filters';
+import './modules/header';
 
 $(document).ready(() => {
   console.log('frontend listo');
