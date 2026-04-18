@@ -24,7 +24,7 @@ export default function Home() {
         <Navbar iconWhatsapp="/assets/icons-whatsapp.svg" />
       </div>
       <HeroSearch />
-      <div className="bg-white py-4 px-6">
+      <div className="bg-white pt-24 px-6">
         <div className="flex flex-col xl:flex-row gap-6 items-start">
           {/* sidebar */}
           <aside className="w-full xl:w-[285px] xl:flex-none">

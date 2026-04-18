@@ -55,7 +55,7 @@ export const Filters = ({ rankings, groups, onChange }: FiltersProps) => {
   };
 
   return (
-    <div className="w-full text-[13px] md:text-[14px]">
+    <div className="w-full text-[13px] md:text-[14px] py-6 max-h-[100vh] lg:overflow-y-auto">
       {/* responsive */}
       <div className="flex flex-col gap-2 lg:hidden mb-4">
         {/* rankings dropdown */}

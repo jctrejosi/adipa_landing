@@ -34,7 +34,7 @@ export const HeroSearch = ({
     >
       <div className="max-w-[var(--inner-max-width,1200px)] mx-auto flex flex-col items-center text-center">
         {/* title */}
-        <h1 className="m-0 text-[var(--title-size,36px)] leading-[1.1] font-bold tracking-[-0.02em] max-md:text-[1.7rem]">
+        <h1 className="m-0 text-[36px] leading-[1.1] font-bold tracking-[-0.02em] max-md:text-[1.7rem]">
           {title}
         </h1>
 
