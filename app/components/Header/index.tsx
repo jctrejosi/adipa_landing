@@ -146,7 +146,7 @@ export const Header = ({
         <div className="flex items-center gap-4 lg:gap-5">
           <button
             onClick={toggleDark}
-            className="hidden md:flex items-center justify-center text-[#1d1d1d] dark:text-gray-200"
+            className="flex items-center justify-center text-[#1d1d1d] dark:text-gray-200"
             aria-label="Cambiar tema"
           >
             {isDark ? <Sun size={16} /> : <Moon size={16} />}
