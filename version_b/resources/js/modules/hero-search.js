@@ -42,10 +42,7 @@ export function initHeroSearch() {
                 detail: { term },
                 bubbles: true
             });
-            section.dispatchEvent(event);
-
-            // También puedes redirigir a una URL con query string (opcional)
-            // window.location.href = `/buscar?q=${encodeURIComponent(term)}`;
+            section.dispatchEvent(event);;
         }
 
         // Eventos del input
