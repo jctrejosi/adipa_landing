@@ -1,7 +1,9 @@
 import $ from 'jquery';
 
 import './modules/header';
+import './modules/navbar';
+import { initNavbar } from './modules/navbar';
 
 $(document).ready(() => {
-  console.log('frontend listo');
+    initNavbar();
 });

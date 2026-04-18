@@ -12,6 +12,7 @@
 </head>
 <body>
     @include('components.header')
+    @include('components.navbar')
 
     <main>
         @yield('content')
