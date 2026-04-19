@@ -19,14 +19,14 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /app
 
-# Copiar archivos de composer primero
+# Copiar archivos de Composer primero (mejor caché)
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --optimize-autoloader --no-scripts
 
-# Copiar resto del código
+# Copiar el resto del código
 COPY . .
 
-# Ejecutar scripts de composer
+# Ejecutar scripts de Composer
 RUN composer run-script post-autoload-dump
 
 # Instalar Node.js 20 LTS y compilar assets
@@ -38,11 +38,16 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
 # Configurar Nginx
 COPY docker/nginx.conf /etc/nginx/sites-enabled/default
 
-# Crear usuario no root
-RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app /var/lib/nginx /var/log/nginx
-USER appuser
+# Copiar script de inicio y dar permisos
+COPY docker/start.sh /start.sh
+RUN chmod +x /start.sh
+
+# Crear directorios necesarios
+RUN mkdir -p /var/log/nginx /var/lib/nginx /run/nginx
+
+# Limpiar caché de apt
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 EXPOSE 8000
 
-# Iniciar PHP-FPM y Nginx
-CMD php-fpm -D && nginx -g "daemon off;"
+CMD ["/start.sh"]
