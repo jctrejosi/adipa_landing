@@ -4,11 +4,11 @@
 
 @php
     $footerData = include(resource_path('views/data/footer.php'));
+    $socialLinks = include(resource_path('views/data/socialLinks.php'));
     $countries = $footerData['countries'];
     $contact = $footerData['contact'];
     $bottomLinks = $footerData['bottomLinks'];
     $sections = $footerData['sections'];
-    $socialLinks = $footerData['socialLinks'];
     $copyrightText = $footerData['copyrightText'];
 @endphp
 
@@ -143,7 +143,7 @@
             <div class="footer__social">
                 @foreach($socialLinks as $social)
                     <a href="{{ $social['href'] }}" target="_blank" rel="noopener noreferrer" class="footer__social-icon" aria-label="{{ $social['ariaLabel'] }}">
-
+                        {!! $social['icon'] !!}
                     </a>
                 @endforeach
             </div>
