@@ -1,18 +1,33 @@
-#!/bin/bash
+#!/bin/sh
+set -e
 
+echo "=== STARTING CONTAINER ==="
+
+# crear directorios necesarios
 mkdir -p /run/nginx /var/log/nginx /var/lib/nginx
 
-chown -R www-data:www-data /run/nginx /var/log/nginx /var/lib/nginx
+# permisos
+chown -R www-data:www-data /run/nginx /var/log/nginx /var/lib/nginx /app/storage /app/bootstrap/cache
 
-# esperar un poco por si acaso (opcional)
-sleep 2
+# info básica (debug)
+echo "APP_ENV=$APP_ENV"
+echo "APP_DEBUG=$APP_DEBUG"
 
-# limpiar y cachear config con ENV reales
-php artisan config:clear
-php artisan cache:clear
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
+# limpiar caches (no romper si algo falla)
+php artisan config:clear || true
+php artisan cache:clear || true
+php artisan route:clear || true
+php artisan view:clear || true
 
-php-fpm -D
+# reconstruir caches con ENV real
+php artisan config:cache || true
+php artisan route:cache || true
+php artisan view:cache || true
+
+echo "=== LARAVEL READY ==="
+
+# iniciar php-fpm en foreground (logs visibles)
+php-fpm -F &
+
+# iniciar nginx en foreground
 nginx -g "daemon off;"
