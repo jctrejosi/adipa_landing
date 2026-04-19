@@ -1,7 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { ContactForm } from "./index";
-import userEvent from "@testing-library/user-event";
 
 const defaultProps = {
   title: "Contacto",
