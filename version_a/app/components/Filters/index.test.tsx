@@ -1,5 +1,4 @@
-// app/components/Filters/index.test.tsx
-import { render, screen, fireEvent, within } from "@testing-library/react";
+import { render, fireEvent, within } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { Filters } from "./index";
 
