@@ -29,7 +29,7 @@ export function initCourseFilters() {
     }
     function parsePrice(priceStr) {
         if (!priceStr) return 0;
-        const clean = priceStr.replace(/[^\d]/g, '');
+        const clean = String(priceStr).replace(/[^\d]/g, '');
         return Number(clean);
     }
 
@@ -43,25 +43,68 @@ export function initCourseFilters() {
         return new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', minimumFractionDigits: 0 }).format(price);
     }
 
+    // Mapeo de títulos de grupo a propiedades del objeto curso
+    const groupToPropertyMap = {
+        'Área Temática': 'areaTematica',
+        'Tipo de programa': 'category',
+        'Modalidad': 'modality',
+        // Los rangos se manejan por separado en la lógica de filtrado
+    };
+
+    // Función para evaluar si un valor numérico está dentro de un rango (string como "min-max" o "min+")
+    function isInRange(value, rangeStr) {
+        if (rangeStr.endsWith('+')) {
+            const min = parseFloat(rangeStr);
+            return value >= min;
+        }
+        const [min, max] = rangeStr.split('-').map(Number);
+        return value >= min && value <= max;
+    }
+
     // ----- Lógica de filtrado y ordenamiento -----
     function filterAndSortCourses() {
         let filtered = [...allCourses];
 
-        // Filtro por ranking (simulamos, en realidad ranking podría ser una propiedad del curso)
+        // 1. Filtro por ranking (se espera que cada curso tenga propiedad 'ranking')
         if (state.ranking !== '*') {
             filtered = filtered.filter(c => c.ranking === state.ranking);
         }
 
-        // Filtros por grupos (ej. categoría, modalidad, etc.)
+        // 2. Filtros por grupos (categoría, modalidad, área temática y rangos)
         for (const [group, values] of Object.entries(state.filters)) {
             if (values.length === 0) continue;
-            filtered = filtered.filter(course => {
-                const courseValue = course[group.toLowerCase()]; // depende de cómo guardes los datos
-                return values.includes(courseValue);
-            });
+
+            if (group === 'Rango de Precio') {
+                filtered = filtered.filter(course => {
+                    const price = parsePrice(course.discountedPrice ?? course.price);
+                    return values.some(range => isInRange(price, range));
+                });
+            } else if (group === 'Rango de Horas') {
+                filtered = filtered.filter(course => {
+                    const hours = course.hours || 0;
+                    return values.some(range => isInRange(hours, range));
+                });
+            } else if (group === 'Rango de Descuento') {
+                filtered = filtered.filter(course => {
+                    const discount = course.discount || 0;
+                    return values.some(range => isInRange(discount, range));
+                });
+            } else {
+                // Grupos con propiedad directa (Área Temática, Tipo de programa, Modalidad)
+                const propName = groupToPropertyMap[group];
+                if (!propName) continue;
+
+                filtered = filtered.filter(course => {
+                    const courseValue = course[propName];
+                    if (courseValue === undefined || courseValue === null) return false;
+                    // Normalizar a minúsculas y reemplazar espacios por guiones (para coincidir con valores de checkboxes)
+                    const normalized = String(courseValue).toLowerCase().replace(/\s+/g, '-');
+                    return values.some(v => normalized === v.toLowerCase());
+                });
+            }
         }
 
-        // Búsqueda textual
+        // 3. Búsqueda textual
         const searchTerm = normalizeText(state.search);
         if (searchTerm) {
             filtered = filtered.filter(course => {
@@ -70,7 +113,7 @@ export function initCourseFilters() {
             });
         }
 
-        // Ordenamiento
+        // 4. Ordenamiento
         if (state.sort !== '*') {
             if (state.sort === 'price-asc') {
                 filtered.sort((a,b) => parsePrice(a.discountedPrice ?? a.price) - parsePrice(b.discountedPrice ?? b.price));
@@ -176,31 +219,33 @@ export function initCourseFilters() {
         });
     }
 
-    // ----- Sincronización de filtros (eventos) -----
+    // ----- Sincronización de filtros (UI) -----
     function updateFiltersUI() {
         // Actualizar radio buttons de ranking
         document.querySelectorAll('[data-ranking-value]').forEach(el => {
             const radio = el.querySelector('input[type="radio"]');
             const value = el.getAttribute('data-ranking-value');
+            if (radio) {
+                radio.checked = (value === state.ranking);
+            }
+            // Clase 'active' opcional
             if (value === state.ranking) {
-                radio.checked = true;
                 el.classList.add('active');
             } else {
-                radio.checked = false;
                 el.classList.remove('active');
             }
         });
 
         // Actualizar checkboxes
-        document.querySelectorAll('.filters__checkbox input').forEach(cb => {
+        document.querySelectorAll('.filters__checkbox input[type="checkbox"]').forEach(cb => {
             const group = cb.getAttribute('data-group');
             const val = cb.value;
             cb.checked = state.filters[group]?.includes(val) || false;
         });
 
         // Renderizar chips activos
-        const chipsContainer = document.querySelectorAll('[data-filters-active-chips]');
-        chipsContainer.forEach(container => {
+        const chipsContainers = document.querySelectorAll('[data-filters-active-chips]');
+        chipsContainers.forEach(container => {
             container.innerHTML = '';
             for (const [group, values] of Object.entries(state.filters)) {
                 values.forEach(val => {
@@ -228,7 +273,6 @@ export function initCourseFilters() {
         state.ranking = value;
         updateFiltersUI();
         filterAndSortCourses();
-        // Emitir evento para que el padre pueda hacer algo
         document.dispatchEvent(new CustomEvent('filters-change', { detail: { ranking: state.ranking, filters: state.filters } }));
     }
 
@@ -286,7 +330,7 @@ export function initCourseFilters() {
         });
     });
 
-    document.querySelectorAll('.filters__checkbox input').forEach(cb => {
+    document.querySelectorAll('.filters__checkbox input[type="checkbox"]').forEach(cb => {
         cb.addEventListener('change', (e) => {
             const group = cb.getAttribute('data-group');
             const value = cb.value;
@@ -306,10 +350,10 @@ export function initCourseFilters() {
             const arrowSpan = toggle.querySelector('.filters__group-arrow');
             if (optionsDiv.style.display === 'none') {
                 optionsDiv.style.display = 'flex';
-                arrowSpan.innerHTML = '▲';
+                if (arrowSpan) arrowSpan.innerHTML = '▲';
             } else {
                 optionsDiv.style.display = 'none';
-                arrowSpan.innerHTML = '▼';
+                if (arrowSpan) arrowSpan.innerHTML = '▼';
             }
         });
     });
@@ -320,19 +364,30 @@ export function initCourseFilters() {
     const filtersToggle = document.querySelector('[data-filters-filters-toggle]');
     const filtersPanel = document.querySelector('[data-filters-filters-panel]');
     if (rankingsToggle && rankingsPanel) {
-        rankingsToggle.addEventListener('click', () => {
+        rankingsToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
             const isVisible = rankingsPanel.style.display === 'block';
             rankingsPanel.style.display = isVisible ? 'none' : 'block';
             if (filtersPanel) filtersPanel.style.display = 'none';
         });
     }
     if (filtersToggle && filtersPanel) {
-        filtersToggle.addEventListener('click', () => {
+        filtersToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
             const isVisible = filtersPanel.style.display === 'block';
             filtersPanel.style.display = isVisible ? 'none' : 'block';
             if (rankingsPanel) rankingsPanel.style.display = 'none';
         });
     }
+    // Cerrar dropdowns al hacer clic fuera
+    document.addEventListener('click', (e) => {
+        if (rankingsToggle && rankingsPanel && !rankingsToggle.contains(e.target) && !rankingsPanel.contains(e.target)) {
+            rankingsPanel.style.display = 'none';
+        }
+        if (filtersToggle && filtersPanel && !filtersToggle.contains(e.target) && !filtersPanel.contains(e.target)) {
+            filtersPanel.style.display = 'none';
+        }
+    });
 
     // ----- Lógica del CourseList (búsqueda y orden) -----
     function setSearch(value) {
@@ -340,14 +395,13 @@ export function initCourseFilters() {
         if (searchInput) searchInput.value = value;
         if (searchClear) searchClear.style.display = value ? 'flex' : 'none';
         filterAndSortCourses();
-        // Emitir evento para el padre (opcional)
         document.dispatchEvent(new CustomEvent('search-change', { detail: { search: value } }));
     }
 
     function setSort(value) {
         state.sort = value;
         const selectedOpt = sortOptions.find(opt => opt.value === value);
-        if (sortLabelSpan) sortLabelSpan.textContent = selectedOpt ? selectedOpt.label : courseListEl.getAttribute('data-all-label') || 'Todos';
+        if (sortLabelSpan) sortLabelSpan.textContent = selectedOpt ? selectedOpt.label : (courseListEl.getAttribute('data-all-label') || 'Todos');
         if (sortDropdown) sortDropdown.style.display = 'none';
         filterAndSortCourses();
     }
@@ -359,7 +413,8 @@ export function initCourseFilters() {
         searchClear.addEventListener('click', () => setSearch(''));
     }
     if (sortTrigger && sortDropdown) {
-        sortTrigger.addEventListener('click', () => {
+        sortTrigger.addEventListener('click', (e) => {
+            e.stopPropagation();
             const isVisible = sortDropdown.style.display === 'block';
             sortDropdown.style.display = isVisible ? 'none' : 'block';
         });
@@ -377,10 +432,12 @@ export function initCourseFilters() {
         });
     }
 
-    // Inicializar estado desde atributos (si los hay)
+    // Inicializar UI desde atributos (si existen)
     const initialSort = courseListEl.querySelector('[data-sort-value]')?.value || '*';
     setSort(initialSort);
     setSearch('');
-    // Forzar render inicial
+
+    // Aplicar estado inicial de filtros (vacío)
+    updateFiltersUI();
     filterAndSortCourses();
 }
