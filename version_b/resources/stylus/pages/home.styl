@@ -1,0 +1,18 @@
+.catalog
+  display block
+  padding 1rem
+
+  @media (min-width: 1280px)
+    display grid
+    grid-template-columns 320px minmax(0, 1fr)
+    gap 2rem
+    align-items start
+
+.catalog__filters
+  @media (min-width: 1280px)
+    position sticky
+    top 1rem
+    align-self start
+
+.catalog__content
+  min-width 0

@@ -29,9 +29,10 @@ export function initCourseFilters() {
     }
     function parsePrice(priceStr) {
         if (!priceStr) return 0;
-        const num = parseFloat(priceStr.replace(/[^0-9.-]+/g, ""));
-        return isNaN(num) ? 0 : num;
+        const clean = priceStr.replace(/[^\d]/g, '');
+        return Number(clean);
     }
+
     function parseDate(dateStr) {
         if (!dateStr) return new Date(0);
         const parts = dateStr.split('/');
@@ -125,9 +126,13 @@ export function initCourseFilters() {
             }
 
             // Precios
-            const price = course.discountedPrice ?? course.price;
-            const originalPrice = course.originalPrice;
+            const priceRaw = course.discountedPrice ?? course.price;
+            const originalRaw = course.originalPrice;
             const discount = course.discount;
+
+            const price = typeof priceRaw === 'number' ? priceRaw : parsePrice(priceRaw);
+            const originalPrice = typeof originalRaw === 'number' ? originalRaw : parsePrice(originalRaw);
+
             const priceDiv = card.querySelector('.course-card__price');
             priceDiv.textContent = formatPrice(price);
             if (discount) {
@@ -135,7 +140,7 @@ export function initCourseFilters() {
                 discountDiv.textContent = `-${discount}%`;
                 discountDiv.style.display = 'inline-block';
             }
-            if (originalPrice) {
+            if (originalRaw) {
                 const originalDiv = card.querySelector('.course-card__original-price');
                 originalDiv.textContent = formatPrice(originalPrice);
                 originalDiv.style.display = 'block';

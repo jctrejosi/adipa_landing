@@ -1,4 +1,4 @@
-{{-- resources/views/components/course-list.blade.php --}}
+
 @props([
     'title' => 'Cursos que te permitirán potenciar tu carrera.',
     'searchPlaceholder' => 'Buscar curso, docente, categoría...',
@@ -8,12 +8,11 @@
     'liveLabel' => 'En vivo',
     'inProgressLabel' => '• En progreso',
     'startLabel' => 'Inicio :',
-    'courses' => [],           // array de cursos (se pasará como JSON)
-    'sortOptions' => [],       // [['value' => '*', 'label' => 'Todos'], ...]
 ])
 
 @php
     $courses = include(resource_path('views/data/courses.php'));
+    $sortOptions = include(resource_path('views/data/sortOptions.php'));
 @endphp
 
 

@@ -32,6 +32,10 @@ $(function () {
   const $searchClose = $('.js-header-search-close');
   const $themeToggle = $('.js-theme-toggle');
 
+  const $drawer = $('[data-site-menu-drawer]');
+  const $drawerClose = $('[data-site-menu-close]');
+  const $menuButton = $('.js-header-menu');
+
   const storedTheme = localStorage.getItem(THEME_KEY);
   const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
   setTheme(storedTheme ? storedTheme === 'dark' : prefersDark);
@@ -56,15 +60,17 @@ $(function () {
 
   $searchForm.on('submit', function (e) {
     e.preventDefault();
-
     const value = $.trim($searchInput.val());
-
     $(document).trigger('site-header:search', [value]);
     closeSearch($header);
   });
 
-  $('.js-header-menu').on('click', function () {
-    $(document).trigger('site-header:menu');
+  $menuButton.on('click', function () {
+    $drawer.addClass('is-open');
+  });
+
+  $drawerClose.on('click', function () {
+    $drawer.removeClass('is-open');
   });
 
   $('.js-header-login').on('click', function () {
@@ -82,6 +88,7 @@ $(function () {
   $(document).on('keydown', function (e) {
     if (e.key === 'Escape') {
       closeSearch($header);
+      $drawer.removeClass('is-open');
     }
   });
 });

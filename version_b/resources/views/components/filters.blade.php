@@ -8,7 +8,7 @@
     <input type="hidden" data-filters-ranking value="*">
     <input type="hidden" data-filters-active value="{}">
 
-    <div class="filters__mobile lg:hidden">
+    <div class="filters__mobile">
         {{-- Rankings dropdown --}}
         <div class="filters__dropdown" data-filters-rankings-dropdown>
             <button type="button" class="filters__dropdown-trigger" data-filters-rankings-toggle>
@@ -67,7 +67,7 @@
     </div>
 
     {{-- Versión desktop --}}
-    <div class="filters__desktop hidden lg:block">
+    <div class="filters__desktop">
         <div class="filters__rankings">
             @foreach($rankings as $item)
                 <label class="filters__ranking-item" data-ranking-value="{{ $item['value'] }}">
