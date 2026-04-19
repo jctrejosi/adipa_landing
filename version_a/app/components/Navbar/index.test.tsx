@@ -1,10 +1,13 @@
 import { render, screen, fireEvent, within } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { Navbar } from "./index";
+import { discoverList, resourcesList } from "@/app/data/navbarSections";
 
 describe("Navbar", () => {
   const defaultProps = {
     iconWhatsapp: "/whatsapp.png",
+    discoverSections: discoverList,
+    resourcesSections: resourcesList,
   };
 
   test("renderiza la versión desktop", () => {

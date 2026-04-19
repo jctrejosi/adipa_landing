@@ -1,4 +1,4 @@
-import { SectionGroup } from "./types";
+import { SectionGroup } from "../components/Navbar/types";
 
 export const discoverList: SectionGroup[] = [
   {

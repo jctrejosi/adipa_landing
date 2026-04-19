@@ -3,15 +3,14 @@
 import { useEffect, useRef } from "react";
 import { ChevronDown, X } from "lucide-react";
 import { Dropdown } from "../Dropdown";
-import { discoverList, resourcesList } from "./defaultProps";
 import { NavbarProps } from "./types";
 
 export const Navbar = ({
   iconWhatsapp,
   mobileOpen = false,
   onClose,
-  discoverSections = discoverList,
-  resourcesSections = resourcesList,
+  discoverSections = [],
+  resourcesSections = [],
 }: NavbarProps) => {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
@@ -63,10 +62,10 @@ export const Navbar = ({
           <Dropdown
             variant="mega"
             trigger={
-              <button className="flex items-center gap-[6px] text-[14px] font-medium text-[#3a3a3a] dark:text-gray-300">
+              <div className="flex items-center gap-[6px] text-[14px] font-medium text-[#3a3a3a] dark:text-gray-300">
                 Descubre ADIPA
                 <ChevronDown size={14} />
-              </button>
+              </div>
             }
             sections={discoverSections}
           />
@@ -78,9 +77,9 @@ export const Navbar = ({
         >
           <Dropdown
             trigger={
-              <button className="flex cursor-pointer items-center text-[14px] text-[var(--link-color,#3a3a3a)] hover:text-black dark:text-gray-300 dark:hover:text-white">
+              <div className="flex cursor-pointer items-center text-[14px] text-[var(--link-color,#3a3a3a)] hover:text-black dark:text-gray-300 dark:hover:text-white">
                 Recursos <ChevronDown size={12} />
-              </button>
+              </div>
             }
             sections={resourcesSections}
           />

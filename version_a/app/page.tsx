@@ -15,6 +15,7 @@ import { coursesData } from "./data/coursesData";
 import { groupsFilter } from "./data/groupsFilter";
 import { orderFilter } from "./data/orderFilter";
 import { rankingFilter } from "./data/sortOptions";
+import { discoverList, resourcesList } from "./data/navbarSections";
 
 export const Home = () => {
   const [search, setSearch] = useState("");
@@ -41,6 +42,8 @@ export const Home = () => {
       />
 
       <Navbar
+        discoverSections={discoverList}
+        resourcesSections={resourcesList}
         iconWhatsapp="/assets/icons-whatsapp.svg"
         mobileOpen={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}
