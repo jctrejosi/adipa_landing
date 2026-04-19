@@ -14,20 +14,14 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /app
 
-# 1. copiar solo composer (cache)
+# copiar solo composer (cache)
 COPY composer.json composer.lock ./
 
-# 2. instalar deps SIN scripts
+# instalar deps
 RUN composer install --no-dev --optimize-autoloader --no-scripts
 
-# 3. copiar código completo
+# copiar código completo
 COPY . .
-
-# 4. ahora sí scripts de laravel
-RUN php artisan package:discover \
- && php artisan config:cache \
- && php artisan route:cache \
- && php artisan view:cache
 
 # permisos
 RUN chown -R www-data:www-data storage bootstrap/cache \

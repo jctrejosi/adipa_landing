@@ -1,13 +1,18 @@
 #!/bin/bash
 
-# Crear directorios necesarios para Nginx
 mkdir -p /run/nginx /var/log/nginx /var/lib/nginx
 
-# Dar permisos
 chown -R www-data:www-data /run/nginx /var/log/nginx /var/lib/nginx
 
-# Iniciar PHP-FPM en segundo plano
-php-fpm -D
+# esperar un poco por si acaso (opcional)
+sleep 2
 
-# Iniciar Nginx en primer plano
+# limpiar y cachear config con ENV reales
+php artisan config:clear
+php artisan cache:clear
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+
+php-fpm -D
 nginx -g "daemon off;"
