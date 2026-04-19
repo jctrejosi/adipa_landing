@@ -3,6 +3,10 @@
 @section('title', 'Home')
 
 @section('content')
+    @include('components.header')
+    @include('components.navbar')
+    @include('components.mobile-drawer')
+    @include('components.hero-search')
     <section class="catalog">
         <aside class="catalog__filters">
             @include('components.filters')

@@ -11,10 +11,6 @@
     ])
 </head>
 <body>
-    @include('components.header')
-    @include('components.navbar')
-    @include('components.mobile-drawer')
-
     <main>
         @yield('content')
     </main>
