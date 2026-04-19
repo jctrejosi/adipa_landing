@@ -1,36 +1,115 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Proyecto Next.js – Versión A
 
-## Getting Started
+Este README contiene todas las instrucciones necesarias para montar el proyecto en un entorno de desarrollo local y para desplegarlo en producción en Vercel.
 
-First, run the development server:
+## Estructura del proyecto
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```text
+.
+├── public/               # Archivos estáticos (imágenes, fuentes, etc.)
+├── src/
+│   └── app/              # Rutas y componentes de la App Router
+        ├── components/   # Componentes de la página
+│       ├── layout.tsx
+│       ├── page.tsx      # Aquí se llaman los componentes (Header, Footer, ...)
+│       └── globals.css
+├── .env.example          # Plantilla de variables de entorno
+├── next.config.js        # Configuración de Next.js
+├── package.json          # Dependencias y scripts
+├── tsconfig.json         # Configuración de TypeScript
+└── yarn.lock             # Versiones de dependencias
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Estructura de un componente
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+├── components/
+│   └── nameComponent/
+│       ├── index.tsx      # Principal (Html, estilos y lógica)
+│       ├── types.ts       # Declaración de los tipos
+│       ├── helpers.ts     # Funciones complejas
+│       └── index.test.tsx # Archivo con los test de jest
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Requisitos previos de instalación
 
-## Learn More
+Asegúrate de tener instaladas las siguientes herramientas en tu sistema:
 
-To learn more about Next.js, take a look at the following resources:
+- **Node.js** versión 18.17.0 o superior
+- **Yarn** versión 1.22.0 o superior
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Verificar versiones
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+node --version
+yarn --version
+```
 
-## Deploy on Vercel
+### Instalar Yarn (si no está presente)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm install --global yarn
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Desarrollo local
+
+1. **Clonar el repositorio**
+
+  ```bash
+  git clone https://github.com/jctrejosi/adipa_landing.git
+  cd adipa_landing
+  ```
+
+2. **Instalar dependencias**
+
+  ```bash
+  yarn install
+  ```
+
+3. **Iniciar el servidor de desarrollo**
+
+  ```bash
+  yarn dev
+  ```
+
+  Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
+
+  *La página se recargará automáticamente al editar los archivos del proyecto.
+
+### Scripts disponibles en desarrollo
+
+| Comando      | Descripción                                           |
+|--------------|-------------------------------------------------------|
+| `yarn dev`   | Inicia el servidor de desarrollo con recarga en caliente. |
+| `yarn build` | Compila la aplicación para producción.                |
+| `yarn start` | Inicia el servidor en modo producción (requiere `yarn build` previo). |
+| `yarn lint`  | Ejecuta el linter para verificar la calidad del código. |
+| `yarn test`  | Ejecuta los test de los componentes. |
+
+## Despliegue en producción (Vercel)
+
+El proyecto está optimizado para ser desplegado en Vercel.
+
+### 1. Verificar la compilación local
+
+Antes de desplegar, es recomendable ejecutar la compilación de producción localmente para asegurar que no hay errores:
+
+```bash
+yarn build
+```
+
+Si la compilación finaliza sin errores, el proyecto está listo para producción.
+
+### 2. Desplegar en Vercel
+
+1. Crea una cuenta en Vercel.
+2. En el dashboard de Vercel, haz clic en **Add New… → Project**.
+3. Conectar con Github y selecciona el repositorio del proyecto.
+4. Vercel detectará automáticamente que se trata de un proyecto Next.js. Los ajustes por defecto son:
+  - **Framework Preset**: Next.js
+  - **Build Command**: `yarn build`
+  - **Output Directory**: `.next`
+  - **Install Command**: `yarn install`
+5. Dar clic en **Deploy**.
+
+*Una vez completado el despliegue, cada nuevo push a la rama principal desencadenará automáticamente un nuevo despliegue.
+
+*Una vez finalizado, Vercel te proporcionará una URL pública (por ejemplo, `https://proyecto.vercel.app`) para acceder a la aplicación en producción.
