@@ -22,12 +22,14 @@ Este README contiene todas las instrucciones necesarias para montar el proyecto 
 
 ### Estructura de un componente
 
+```text
 ├── components/
 │   └── nameComponent/
 │       ├── index.tsx      # Principal (Html, estilos y lógica)
 │       ├── types.ts       # Declaración de los tipos
 │       ├── helpers.ts     # Funciones complejas
 │       └── index.test.tsx # Archivo con los test de jest
+```
 
 ## Requisitos previos de instalación
 
@@ -55,7 +57,7 @@ npm install --global yarn
 
   ```bash
   git clone https://github.com/jctrejosi/adipa_landing.git
-  cd adipa_landing
+  cd adipa_landing/version_a
   ```
 
 2. **Instalar dependencias**
@@ -109,7 +111,5 @@ Si la compilación finaliza sin errores, el proyecto está listo para producció
   - **Output Directory**: `.next`
   - **Install Command**: `yarn install`
 5. Dar clic en **Deploy**.
-
-*Una vez completado el despliegue, cada nuevo push a la rama principal desencadenará automáticamente un nuevo despliegue.
 
 *Una vez finalizado, Vercel te proporcionará una URL pública (por ejemplo, `https://proyecto.vercel.app`) para acceder a la aplicación en producción.
