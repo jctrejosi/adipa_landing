@@ -10,7 +10,7 @@ import {
   Sun,
   Moon,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type HeaderProps = {
   logoSrc: string;
@@ -37,6 +37,7 @@ export const Header = ({
 }: HeaderProps) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
 
   const toggleDark = () => {
     document.documentElement.classList.toggle("dark");
@@ -46,6 +47,12 @@ export const Header = ({
   const handleSearch = (value: string) => {
     onSearch?.(value);
   };
+
+  useEffect(() => {
+    if (isSearchOpen) {
+      searchInputRef.current?.focus();
+    }
+  }, [isSearchOpen]);
 
   return (
     <header
@@ -60,13 +67,16 @@ export const Header = ({
       {/* Logo + menú */}
       <div className="flex items-center gap-5">
         <button
+          type="button"
           onClick={onMenu}
           className="block lg:hidden text-[#704efd] dark:text-[#8b6eff]"
-          aria-label="Menú"
+          aria-label="Abrir menú"
+          aria-expanded="false"
         >
-          <Menu size={24} />
+          <Menu size={24} aria-hidden="true" />
         </button>
-        <a href={logoHref}>
+
+        <a href={logoHref} aria-label="Ir al inicio">
           <img
             src={logoSrc}
             alt="logo"
@@ -75,7 +85,7 @@ export const Header = ({
         </a>
       </div>
 
-      {/* Buscador: en escritorio es estático; en móvil se puede abrir*/}
+      {/* Buscador: en escritorio es estático; en móvil se puede abrir */}
       <div
         className={`
           flex items-center
@@ -86,9 +96,17 @@ export const Header = ({
               : "ml-auto mr-4 lg:mx-0"
           }
         `}
+        role="search"
+        aria-label="Buscar cursos"
       >
+        <label htmlFor="header-search" className="sr-only">
+          {searchPlaceholder}
+        </label>
+
         {/* Input de búsqueda */}
         <input
+          id="header-search"
+          ref={searchInputRef}
           type="text"
           placeholder={searchPlaceholder}
           className={`
@@ -103,40 +121,41 @@ export const Header = ({
             if (e.key === "Enter") {
               handleSearch((e.target as HTMLInputElement).value);
             }
+
+            if (e.key === "Escape") {
+              setIsSearchOpen(false);
+            }
           }}
+          aria-label={searchPlaceholder}
         />
 
         {/* Botón lupa */}
         <button
+          type="button"
           className="bg-[#2cb7ff] dark:bg-[#1e8bcb] text-white p-2 rounded-md flex items-center justify-center lg:rounded-none lg:rounded-r-md"
           onClick={() => {
             if (!isSearchOpen) {
               setIsSearchOpen(true);
-              setTimeout(() => {
-                const input = document.querySelector(
-                  'input[type="text"]'
-                ) as HTMLInputElement;
-                input?.focus();
-              }, 0);
             } else {
-              const input = document.querySelector(
-                'input[type="text"]'
-              ) as HTMLInputElement;
-              if (input) handleSearch(input.value);
+              const value = searchInputRef.current?.value ?? "";
+              handleSearch(value);
             }
           }}
-          aria-label="Buscar"
+          aria-label={isSearchOpen ? "Ejecutar búsqueda" : "Abrir búsqueda"}
+          aria-controls="header-search"
+          aria-expanded={isSearchOpen}
         >
-          <Search size={18} />
+          <Search size={18} aria-hidden="true" />
         </button>
 
         {isSearchOpen && (
           <button
+            type="button"
             className="bg-transparent border-none cursor-pointer flex items-center justify-center text-black dark:text-white"
             onClick={() => setIsSearchOpen(false)}
             aria-label="Cerrar búsqueda"
           >
-            <X size={20} />
+            <X size={20} aria-hidden="true" />
           </button>
         )}
       </div>
@@ -145,36 +164,57 @@ export const Header = ({
       {!isSearchOpen && (
         <div className="flex items-center gap-4 lg:gap-5">
           <button
+            type="button"
             onClick={toggleDark}
             className="flex items-center justify-center text-[#1d1d1d] dark:text-gray-200"
             aria-label="Cambiar tema"
+            aria-pressed={isDark}
           >
-            {isDark ? <Sun size={16} /> : <Moon size={16} />}
+            {isDark ? (
+              <Sun size={16} aria-hidden="true" />
+            ) : (
+              <Moon size={16} aria-hidden="true" />
+            )}
           </button>
+
           <button
+            type="button"
             onClick={onLogin}
             className="bg-transparent border-none cursor-pointer text-[#1d1d1d] dark:text-gray-200 font-bold"
+            aria-label="Inicia sesión"
           >
             <span className="hidden lg:inline">Inicia sesión</span>
-            <User className="inline lg:hidden" size={20} />
+            <User className="inline lg:hidden" size={20} aria-hidden="true" />
           </button>
 
           <button
+            type="button"
             onClick={onRegister}
             className="bg-transparent border-none cursor-pointer text-[#1d1d1d] dark:text-gray-200"
+            aria-label="Regístrate"
           >
             <span className="hidden lg:inline">Regístrate</span>
-            <UserPlus className="inline lg:hidden" size={20} />
+            <UserPlus
+              className="inline lg:hidden"
+              size={20}
+              aria-hidden="true"
+            />
           </button>
 
           <button
+            type="button"
             onClick={onCartClick}
-            aria-label="Carrito"
+            aria-label={`Carrito${
+              cartCount > 0 ? `, ${cartCount} productos` : ""
+            }`}
             className="relative bg-transparent border-none cursor-pointer text-[#704efd] dark:text-[#8b6eff]"
           >
-            <ShoppingCart size={20} />
+            <ShoppingCart size={20} aria-hidden="true" />
             {cartCount > 0 && (
-              <span className="absolute -top-2 -right-2 bg-white dark:bg-gray-800 text-[#704efd] dark:text-[#8b6eff] text-xs w-5 h-5 rounded-full flex items-center justify-center border border-gray-200 dark:border-gray-600">
+              <span
+                className="absolute -top-2 -right-2 bg-white dark:bg-gray-800 text-[#704efd] dark:text-[#8b6eff] text-xs w-5 h-5 rounded-full flex items-center justify-center border border-gray-200 dark:border-gray-600"
+                aria-label={`${cartCount} productos en el carrito`}
+              >
                 {cartCount}
               </span>
             )}

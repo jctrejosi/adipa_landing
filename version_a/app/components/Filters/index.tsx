@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import { FiltersProps } from "./types";
 
 export const Filters = ({ rankings, groups, onChange }: FiltersProps) => {
@@ -12,6 +12,9 @@ export const Filters = ({ rankings, groups, onChange }: FiltersProps) => {
 
   const [showRankings, setShowRankings] = useState<boolean>(false);
   const [showFilters, setShowFilters] = useState<boolean>(false);
+
+  const rankingsMenuId = useId();
+  const filtersMenuId = useId();
 
   const toggleGroup = (title: string) => {
     setOpenGroups((prev) => ({
@@ -65,17 +68,27 @@ export const Filters = ({ rankings, groups, onChange }: FiltersProps) => {
               setShowFilters(false);
             }}
             className="flex w-full items-center justify-between rounded-md border border-gray-300 bg-white px-4 py-2 text-left font-medium text-[var(--text-color,#13013f)] shadow-sm hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700"
+            aria-expanded={showRankings}
+            aria-controls={rankingsMenuId}
+            aria-haspopup="listbox"
           >
             <span>Rankings</span>
-            <span>{showRankings ? "▲" : "▼"}</span>
+            <span aria-hidden="true">{showRankings ? "▲" : "▼"}</span>
           </button>
 
           {showRankings && (
-            <div className="absolute left-0 top-full z-20 mt-1 w-full overflow-hidden rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-600 dark:bg-gray-800">
+            <div
+              id={rankingsMenuId}
+              className="absolute left-0 top-full z-20 mt-1 w-full overflow-hidden rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-600 dark:bg-gray-800"
+              role="listbox"
+              aria-label="Rankings"
+            >
               <div className="flex flex-col gap-0 p-2">
                 {rankings.map((item) => (
                   <label
                     key={item.value}
+                    role="option"
+                    aria-selected={selectedRanking === item.value}
                     className="flex cursor-pointer items-center gap-2 rounded-md px-2 py-2 text-[var(--text-color,#13013f)] hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700"
                   >
                     <input
@@ -84,7 +97,7 @@ export const Filters = ({ rankings, groups, onChange }: FiltersProps) => {
                       value={item.value}
                       checked={selectedRanking === item.value}
                       onChange={() => handleRankingChange(item.value)}
-                      className="hidden"
+                      className="sr-only"
                     />
 
                     <span
@@ -102,6 +115,7 @@ export const Filters = ({ rankings, groups, onChange }: FiltersProps) => {
                         src={item.icon}
                         className="h-[18px] w-[18px]"
                         alt=""
+                        aria-hidden="true"
                       />
                     )}
                   </label>
@@ -119,13 +133,21 @@ export const Filters = ({ rankings, groups, onChange }: FiltersProps) => {
               setShowRankings(false);
             }}
             className="flex w-full items-center justify-between rounded-md border border-gray-300 bg-white px-4 py-2 text-left font-medium text-[var(--text-color,#13013f)] shadow-sm hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700"
+            aria-expanded={showFilters}
+            aria-controls={filtersMenuId}
+            aria-haspopup="dialog"
           >
             <span>Filtros</span>
-            <span>{showFilters ? "▲" : "▼"}</span>
+            <span aria-hidden="true">{showFilters ? "▲" : "▼"}</span>
           </button>
 
           {showFilters && (
-            <div className="absolute left-0 top-full z-20 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-600 dark:bg-gray-800">
+            <div
+              id={filtersMenuId}
+              className="absolute left-0 top-full z-20 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-600 dark:bg-gray-800"
+              role="region"
+              aria-label="Filtros"
+            >
               <div className="p-4">
                 <div className="mb-3 flex items-center justify-between">
                   <h4 className="m-0 font-semibold text-[var(--text-color,#13013f)] dark:text-gray-100">
@@ -141,7 +163,10 @@ export const Filters = ({ rankings, groups, onChange }: FiltersProps) => {
                   </button>
                 </div>
 
-                <div className="mb-4 flex flex-wrap gap-2">
+                <div
+                  className="mb-4 flex flex-wrap gap-2"
+                  aria-label="Filtros aplicados"
+                >
                   {Object.entries(selectedFilters).map(([group, values]) =>
                     values.map((val) => (
                       <div
@@ -149,53 +174,69 @@ export const Filters = ({ rankings, groups, onChange }: FiltersProps) => {
                         className="flex items-center gap-1.5 rounded-[6px] bg-[var(--text-color,#13013f)] px-[10px] py-[6px] text-[11px] text-white md:text-[12px] dark:bg-gray-600"
                       >
                         <span>{val}</span>
-                        <span
+                        <button
+                          type="button"
                           onClick={() => removeFilter(group, val)}
-                          className="cursor-pointer select-none"
+                          className="cursor-pointer select-none border-0 bg-transparent p-0 leading-none text-inherit"
+                          aria-label={`Eliminar filtro ${val}`}
                         >
                           ×
-                        </span>
+                        </button>
                       </div>
                     ))
                   )}
                 </div>
 
-                {groups.map((group) => (
-                  <div key={group.title} className="mb-4">
-                    <div
-                      className="mb-2 flex cursor-pointer items-center justify-between font-semibold text-[var(--text-color,#13013f)] dark:text-gray-100"
-                      onClick={() => toggleGroup(group.title)}
-                    >
-                      <span>{group.title}</span>
-                      <span>{openGroups[group.title] ? "▲" : "▼"}</span>
-                    </div>
+                {groups.map((group) => {
+                  const groupId = `filter-group-${group.title}`;
 
-                    {openGroups[group.title] && (
-                      <div className="flex flex-col gap-1.5">
-                        {group.options.map((opt) => (
-                          <label
-                            key={opt.value}
-                            className="flex cursor-pointer items-center gap-1.5 text-[var(--text-muted,#13013f)] dark:text-gray-300"
-                          >
-                            <input
-                              type="checkbox"
-                              checked={
-                                selectedFilters[group.title]?.includes(
-                                  opt.value
-                                ) || false
-                              }
-                              onChange={() =>
-                                handleCheckbox(group.title, opt.value)
-                              }
-                              className="accent-[var(--primary-color,#6f4ef6)] dark:accent-[#8b6eff]"
-                            />
-                            <span>{opt.label}</span>
-                          </label>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ))}
+                  return (
+                    <div key={group.title} className="mb-4">
+                      <button
+                        type="button"
+                        className="mb-2 flex w-full cursor-pointer items-center justify-between font-semibold text-[var(--text-color,#13013f)] dark:text-gray-100"
+                        onClick={() => toggleGroup(group.title)}
+                        aria-expanded={!!openGroups[group.title]}
+                        aria-controls={groupId}
+                      >
+                        <span>{group.title}</span>
+                        <span aria-hidden="true">
+                          {openGroups[group.title] ? "▲" : "▼"}
+                        </span>
+                      </button>
+
+                      {openGroups[group.title] && (
+                        <div
+                          id={groupId}
+                          className="flex flex-col gap-1.5"
+                          role="group"
+                          aria-label={group.title}
+                        >
+                          {group.options.map((opt) => (
+                            <label
+                              key={opt.value}
+                              className="flex cursor-pointer items-center gap-1.5 text-[var(--text-muted,#13013f)] dark:text-gray-300"
+                            >
+                              <input
+                                type="checkbox"
+                                checked={
+                                  selectedFilters[group.title]?.includes(
+                                    opt.value
+                                  ) || false
+                                }
+                                onChange={() =>
+                                  handleCheckbox(group.title, opt.value)
+                                }
+                                className="accent-[var(--primary-color,#6f4ef6)] dark:accent-[#8b6eff]"
+                              />
+                              <span>{opt.label}</span>
+                            </label>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           )}
@@ -203,10 +244,16 @@ export const Filters = ({ rankings, groups, onChange }: FiltersProps) => {
       </div>
 
       <div className="hidden lg:block">
-        <div className="mb-5 flex flex-col gap-2">
+        <div
+          className="mb-5 flex flex-col gap-2"
+          role="listbox"
+          aria-label="Rankings"
+        >
           {rankings.map((item) => (
             <label
               key={item.value}
+              role="option"
+              aria-selected={selectedRanking === item.value}
               className="flex cursor-pointer items-center gap-2 text-[var(--text-color,#13013f)] dark:text-gray-300"
             >
               <input
@@ -215,7 +262,7 @@ export const Filters = ({ rankings, groups, onChange }: FiltersProps) => {
                 value={item.value}
                 checked={selectedRanking === item.value}
                 onChange={() => handleRankingChange(item.value)}
-                className="hidden"
+                className="sr-only"
               />
 
               <span
@@ -229,7 +276,12 @@ export const Filters = ({ rankings, groups, onChange }: FiltersProps) => {
               </span>
 
               {item.icon && (
-                <img src={item.icon} className="h-[18px] w-[18px]" alt="" />
+                <img
+                  src={item.icon}
+                  className="h-[18px] w-[18px]"
+                  alt=""
+                  aria-hidden="true"
+                />
               )}
             </label>
           ))}
@@ -249,7 +301,10 @@ export const Filters = ({ rankings, groups, onChange }: FiltersProps) => {
           </button>
         </div>
 
-        <div className="mb-4 flex flex-wrap gap-2">
+        <div
+          className="mb-4 flex flex-wrap gap-2"
+          aria-label="Filtros aplicados"
+        >
           {Object.entries(selectedFilters).map(([group, values]) =>
             values.map((val) => (
               <div
@@ -257,51 +312,69 @@ export const Filters = ({ rankings, groups, onChange }: FiltersProps) => {
                 className="flex items-center gap-1.5 rounded-[6px] bg-[var(--text-color,#13013f)] px-[10px] py-[6px] text-[11px] text-white md:text-[12px] dark:bg-gray-600"
               >
                 <span>{val}</span>
-                <span
+                <button
+                  type="button"
                   onClick={() => removeFilter(group, val)}
-                  className="cursor-pointer select-none"
+                  className="cursor-pointer select-none border-0 bg-transparent p-0 leading-none text-inherit"
+                  aria-label={`Eliminar filtro ${val}`}
                 >
                   ×
-                </span>
+                </button>
               </div>
             ))
           )}
         </div>
 
         <div className="max-h-[80vh] overflow-y-auto pr-2">
-          {groups.map((group) => (
-            <div key={group.title} className="mb-4">
-              <div
-                className="mb-2 flex cursor-pointer items-center justify-between font-semibold text-[var(--text-color,#13013f)] dark:text-gray-100"
-                onClick={() => toggleGroup(group.title)}
-              >
-                <span>{group.title}</span>
-                <span>{openGroups[group.title] ? "▲" : "▼"}</span>
-              </div>
+          {groups.map((group) => {
+            const groupId = `filter-group-desktop-${group.title}`;
 
-              {openGroups[group.title] && (
-                <div className="flex flex-col gap-1.5">
-                  {group.options.map((opt) => (
-                    <label
-                      key={opt.value}
-                      className="flex cursor-pointer items-center gap-1.5 text-[var(--text-muted,#13013f)] dark:text-gray-300"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={
-                          selectedFilters[group.title]?.includes(opt.value) ||
-                          false
-                        }
-                        onChange={() => handleCheckbox(group.title, opt.value)}
-                        className="accent-[var(--primary-color,#6f4ef6)] dark:accent-[#8b6eff]"
-                      />
-                      <span>{opt.label}</span>
-                    </label>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
+            return (
+              <div key={group.title} className="mb-4">
+                <button
+                  type="button"
+                  className="mb-2 flex w-full cursor-pointer items-center justify-between font-semibold text-[var(--text-color,#13013f)] dark:text-gray-100"
+                  onClick={() => toggleGroup(group.title)}
+                  aria-expanded={!!openGroups[group.title]}
+                  aria-controls={groupId}
+                >
+                  <span>{group.title}</span>
+                  <span aria-hidden="true">
+                    {openGroups[group.title] ? "▲" : "▼"}
+                  </span>
+                </button>
+
+                {openGroups[group.title] && (
+                  <div
+                    id={groupId}
+                    className="flex flex-col gap-1.5"
+                    role="group"
+                    aria-label={group.title}
+                  >
+                    {group.options.map((opt) => (
+                      <label
+                        key={opt.value}
+                        className="flex cursor-pointer items-center gap-1.5 text-[var(--text-muted,#13013f)] dark:text-gray-300"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={
+                            selectedFilters[group.title]?.includes(opt.value) ||
+                            false
+                          }
+                          onChange={() =>
+                            handleCheckbox(group.title, opt.value)
+                          }
+                          className="accent-[var(--primary-color,#6f4ef6)] dark:accent-[#8b6eff]"
+                        />
+                        <span>{opt.label}</span>
+                      </label>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

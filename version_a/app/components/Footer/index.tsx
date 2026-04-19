@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useId, useState } from "react";
 import { Phone, Mail, MapPin, Send, Globe } from "lucide-react";
 import { FooterProps, FooterSection, NewsletterForm } from "./types";
 import {
@@ -15,25 +15,33 @@ import {
 // Subcomponentes
 // ============================================================
 
-const SectionLinks = ({ title, links }: FooterSection) => (
-  <div className="flex flex-col gap-5">
-    <h4 className="text-[14px] font-bold uppercase tracking-widest border-b border-white/10 pb-2 inline-block text-[#8494C9]">
-      {title}
-    </h4>
-    <ul className="flex flex-col gap-3">
-      {links.map((link, idx) => (
-        <li key={idx}>
-          <a
-            href={link.href || "#"}
-            className="text-xs font-bold text-gray-300 hover:text-white transition-all uppercase"
-          >
-            {link.label}
-          </a>
-        </li>
-      ))}
-    </ul>
-  </div>
-);
+const SectionLinks = ({ title, links }: FooterSection) => {
+  const headingId = useId();
+
+  return (
+    <nav className="flex flex-col gap-5" aria-labelledby={headingId}>
+      <h4
+        id={headingId}
+        className="text-[14px] font-bold uppercase tracking-widest border-b border-white/10 pb-2 inline-block text-[#8494C9]"
+      >
+        {title}
+      </h4>
+
+      <ul className="flex flex-col gap-3">
+        {links.map((link, idx) => (
+          <li key={idx}>
+            <a
+              href={link.href || "#"}
+              className="text-xs font-bold text-gray-300 hover:text-white transition-all uppercase"
+            >
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
+};
 
 // ============================================================
 // Componente principal
@@ -53,6 +61,10 @@ export const Footer = ({
     email: "",
     frequency: "",
   });
+
+  const nameId = useId();
+  const emailId = useId();
+  const frequencyId = useId();
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -78,19 +90,31 @@ export const Footer = ({
               alt="ADIPA"
               className="w-40 brightness-0 invert"
             />
+
             <div className="flex flex-col gap-4">
               <span className="text-xs font-bold uppercase tracking-wider text-gray-300">
                 Estamos presentes en:
               </span>
-              <ul className="flex flex-col gap-3">
+
+              <ul
+                className="flex flex-col gap-3"
+                aria-label="Países donde está presente"
+              >
                 {countries.map((country) => (
                   <li
                     key={country.code}
                     className="flex items-center gap-3 text-[13px] font-bold hover:text-blue-300 cursor-pointer transition-colors group"
                   >
-                    <span className="w-6 flex justify-center">
+                    <span
+                      className="w-6 flex justify-center"
+                      aria-hidden="true"
+                    >
                       {country.globeIcon ? (
-                        <Globe size={18} className="text-white" />
+                        <Globe
+                          size={18}
+                          className="text-white"
+                          aria-hidden="true"
+                        />
                       ) : (
                         country.flag
                       )}
@@ -104,12 +128,13 @@ export const Footer = ({
             </div>
           </div>
 
-          {/* Render sections dynamically: first two go into second column, next three into third column */}
+          {/* Render sections dynamically */}
           <div className="flex flex-col gap-12">
             {sections.slice(0, 2).map((section) => (
               <SectionLinks key={section.title} {...section} />
             ))}
           </div>
+
           <div className="flex flex-col gap-12">
             {sections.slice(2).map((section) => (
               <SectionLinks key={section.title} {...section} />
@@ -121,22 +146,38 @@ export const Footer = ({
             <h4 className="text-[14px] font-bold uppercase tracking-widest text-[#8494C9]">
               Contacto
             </h4>
+
             <div className="flex flex-col gap-4 text-[13px] text-gray-300">
-              <div className="flex items-start gap-3">
-                <Phone size={18} className="text-blue-300 shrink-0" />
+              <p className="flex items-start gap-3">
+                <Phone
+                  size={18}
+                  className="text-blue-300 shrink-0"
+                  aria-hidden="true"
+                />
                 <span>{contact.phone}</span>
-              </div>
-              <div className="flex items-start gap-3">
-                <Mail size={18} className="text-blue-300 shrink-0" />
+              </p>
+
+              <p className="flex items-start gap-3">
+                <Mail
+                  size={18}
+                  className="text-blue-300 shrink-0"
+                  aria-hidden="true"
+                />
                 <span>{contact.email}</span>
-              </div>
+              </p>
+
               <div className="flex items-start gap-3">
-                <MapPin size={18} className="text-blue-300 shrink-0" />
+                <MapPin
+                  size={18}
+                  className="text-blue-300 shrink-0"
+                  aria-hidden="true"
+                />
                 <a
                   href={contact.addressLink || "#"}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-white transition-colors"
+                  aria-label={`Abrir dirección: ${contact.address}`}
                 >
                   <span className="text-xs leading-tight text-white">
                     {contact.address}
@@ -144,7 +185,11 @@ export const Footer = ({
                 </a>
               </div>
             </div>
-            <div className="flex flex-col gap-2 mt-4">
+
+            <div
+              className="flex flex-col gap-2 mt-4"
+              aria-label="Enlaces adicionales"
+            >
               {bottomLinks.map((link, idx) => (
                 <a
                   key={idx}
@@ -164,57 +209,75 @@ export const Footer = ({
           {/* Newsletter Form */}
           <div className="bg-white/5 p-5 rounded-2xl border border-white/10 h-fit min-h-[350px] flex flex-col">
             <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-              <h4 className="text-[13px] font-bold mb-2 uppercase leading-tight">
-                Suscríbete a nuestro Newsletter
-              </h4>
-              <div className="flex flex-col gap-1">
-                <label className="text-[10px] font-bold uppercase text-gray-400">
-                  Nombre*
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  className="bg-white text-black px-3 py-1.5 rounded-md text-sm outline-none"
-                  required
-                />
-              </div>
-              <div className="flex flex-col gap-1">
-                <label className="text-[10px] font-bold uppercase text-gray-400">
-                  Email*
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  className="bg-white text-black px-3 py-1.5 rounded-md text-sm outline-none"
-                  required
-                />
-              </div>
-              <div className="flex flex-col gap-1">
-                <label className="text-[10px] font-bold text-gray-400 uppercase leading-tight">
-                  Frecuencia*
-                </label>
-                <select
-                  name="frequency"
-                  value={formData.frequency}
-                  onChange={handleInputChange}
-                  className="bg-white text-black px-3 py-1.5 rounded-md text-sm outline-none"
-                  required
-                >
-                  <option value="">Selecciona</option>
-                  <option value="2">2 al mes</option>
-                  <option value="1">1 al mes</option>
-                </select>
-              </div>
+              <fieldset className="contents">
+                <legend className="text-[13px] font-bold mb-2 uppercase leading-tight">
+                  Suscríbete a nuestro Newsletter
+                </legend>
+
+                <div className="flex flex-col gap-1">
+                  <label
+                    htmlFor={nameId}
+                    className="text-[10px] font-bold uppercase text-gray-400"
+                  >
+                    Nombre*
+                  </label>
+                  <input
+                    id={nameId}
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    className="bg-white text-black px-3 py-1.5 rounded-md text-sm outline-none"
+                    required
+                  />
+                </div>
+
+                <div className="flex flex-col gap-1">
+                  <label
+                    htmlFor={emailId}
+                    className="text-[10px] font-bold uppercase text-gray-400"
+                  >
+                    Email*
+                  </label>
+                  <input
+                    id={emailId}
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    className="bg-white text-black px-3 py-1.5 rounded-md text-sm outline-none"
+                    required
+                  />
+                </div>
+
+                <div className="flex flex-col gap-1">
+                  <label
+                    htmlFor={frequencyId}
+                    className="text-[10px] font-bold text-gray-400 uppercase leading-tight"
+                  >
+                    Frecuencia*
+                  </label>
+                  <select
+                    id={frequencyId}
+                    name="frequency"
+                    value={formData.frequency}
+                    onChange={handleInputChange}
+                    className="bg-white text-black px-3 py-1.5 rounded-md text-sm outline-none"
+                    required
+                  >
+                    <option value="">Selecciona</option>
+                    <option value="2">2 al mes</option>
+                    <option value="1">1 al mes</option>
+                  </select>
+                </div>
+              </fieldset>
+
               <button
                 type="submit"
                 className="bg-[#2cb7ff] hover:bg-blue-500 text-white font-bold py-2 rounded-md transition-all flex items-center justify-center gap-2 text-sm mt-2"
               >
                 ENVIAR
-                <Send size={14} />
+                <Send size={14} aria-hidden="true" />
               </button>
             </form>
           </div>
@@ -225,7 +288,8 @@ export const Footer = ({
       <div className="bg-[#3a3f5a] border-t border-white/10 py-6">
         <div className="max-w-[1440px] mx-auto px-4 md:px-8 xl:px-10 flex flex-col md:flex-row items-center justify-between gap-6">
           <p className="text-base text-gray-400 font-medium">{copyrightText}</p>
-          <div className="flex items-center gap-4">
+
+          <div className="flex items-center gap-4" aria-label="Redes sociales">
             {socialLinks.map((social, idx) => (
               <a
                 key={idx}

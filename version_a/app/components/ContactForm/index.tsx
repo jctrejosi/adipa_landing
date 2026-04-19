@@ -31,9 +31,7 @@ export const ContactForm = ({
   const validate = () => {
     const newErrors: Partial<FormData> = {};
 
-    if (!form.name.trim()) {
-      newErrors.name = "El nombre es obligatorio";
-    }
+    if (!form.name.trim()) newErrors.name = "El nombre es obligatorio";
 
     if (!form.email.trim()) {
       newErrors.email = "El email es obligatorio";
@@ -69,7 +67,11 @@ export const ContactForm = ({
 
   if (submitted) {
     return (
-      <div className="bg-white border border-[#13013f] rounded-xl p-8 text-center max-w-xl w-full dark:bg-gray-800 dark:border-gray-600">
+      <section
+        role="status"
+        aria-live="polite"
+        className="bg-white border border-[#13013f] rounded-xl p-8 text-center max-w-xl w-full dark:bg-gray-800 dark:border-gray-600"
+      >
         <div className="flex justify-center mb-4">
           <div className="bg-green-100 p-4 rounded-full border border-green-300 dark:bg-green-900/50 dark:border-green-700">
             <Check className="text-green-600 dark:text-green-400" size={28} />
@@ -85,84 +87,119 @@ export const ContactForm = ({
         </p>
 
         <button
+          type="button"
           onClick={handleReset}
           className="text-[#13013f] hover:underline dark:text-gray-300"
         >
           {successButtonLabel}
         </button>
-      </div>
+      </section>
     );
   }
 
   return (
     <form
       onSubmit={handleSubmit}
+      aria-describedby="form-description"
       className="bg-white md:border md:border-[#13013f] rounded-xl md:p-8 p-4 space-y-6 w-full max-w-xl dark:bg-gray-800 dark:md:border-gray-600"
     >
-      {/* header */}
-      <div className="space-y-2">
-        <h4 className="text-[#13013f] text-xl font-semibold dark:text-gray-100">
+      <header className="space-y-2">
+        <h1 className="text-[#13013f] text-xl font-semibold dark:text-gray-100">
           {title}
-        </h4>
+        </h1>
 
-        <p className="text-[#13013f]/70 text-sm leading-relaxed dark:text-gray-400">
+        <p
+          id="form-description"
+          className="text-[#13013f]/70 text-sm leading-relaxed dark:text-gray-400"
+        >
           {description}
         </p>
-      </div>
+      </header>
 
       {/* nombre */}
       <div>
-        <label className="text-sm text-[#13013f] dark:text-gray-300">
-          {nameLabel} <span className="text-red-500">*</span>
+        <label
+          htmlFor="name"
+          className="text-sm text-[#13013f] dark:text-gray-300"
+        >
+          {nameLabel} <span aria-hidden="true">*</span>
         </label>
 
         <input
+          id="name"
+          name="name"
           type="text"
           placeholder={namePlaceholder}
           value={form.name}
+          aria-invalid={!!errors.name}
+          aria-describedby={errors.name ? "name-error" : undefined}
           onChange={(e) => setForm({ ...form, name: e.target.value })}
           className="mt-1 w-full bg-white border border-[#13013f] rounded-md px-3 py-2 text-[#13013f] outline-none focus:ring-2 focus:ring-[#13013f] dark:bg-gray-900 dark:border-gray-600 dark:text-gray-100 dark:focus:ring-gray-500"
         />
 
         {errors.name && (
-          <p className="text-red-500 text-xs mt-1">{errors.name}</p>
+          <p id="name-error" role="alert" className="text-red-500 text-xs mt-1">
+            {errors.name}
+          </p>
         )}
       </div>
 
       {/* email */}
       <div>
-        <label className="text-sm text-[#13013f] dark:text-gray-300">
-          {emailLabel} <span className="text-red-500">*</span>
+        <label
+          htmlFor="email"
+          className="text-sm text-[#13013f] dark:text-gray-300"
+        >
+          {emailLabel} <span aria-hidden="true">*</span>
         </label>
 
         <input
+          id="email"
+          name="email"
           type="email"
           placeholder={emailPlaceholder}
           value={form.email}
+          aria-invalid={!!errors.email}
+          aria-describedby={errors.email ? "email-error" : undefined}
           onChange={(e) => setForm({ ...form, email: e.target.value })}
           className="mt-1 w-full bg-white border border-[#13013f] rounded-md px-3 py-2 text-[#13013f] outline-none focus:ring-2 focus:ring-[#13013f] dark:bg-gray-900 dark:border-gray-600 dark:text-gray-100 dark:focus:ring-gray-500"
         />
 
         {errors.email && (
-          <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+          <p
+            id="email-error"
+            role="alert"
+            className="text-red-500 text-xs mt-1"
+          >
+            {errors.email}
+          </p>
         )}
       </div>
 
       {/* mensaje */}
       <div>
-        <label className="text-sm text-[#13013f] dark:text-gray-300">
-          {messageLabel} <span className="text-red-500">*</span>
+        <label
+          htmlFor="message"
+          className="text-sm text-[#13013f] dark:text-gray-300"
+        >
+          {messageLabel} <span aria-hidden="true">*</span>
         </label>
 
         <textarea
+          id="message"
+          name="message"
           placeholder={messagePlaceholder}
           value={form.message}
           maxLength={300}
+          aria-invalid={!!errors.message}
+          aria-describedby={
+            errors.message ? "message-error message-help" : "message-help"
+          }
           onChange={(e) => setForm({ ...form, message: e.target.value })}
           className="mt-1 w-full bg-white border border-[#13013f] rounded-md px-3 py-2 text-[#13013f] outline-none focus:ring-2 focus:ring-[#13013f] h-28 resize-none dark:bg-gray-900 dark:border-gray-600 dark:text-gray-100 dark:focus:ring-gray-500"
         />
 
-        <div className="flex justify-between text-xs mt-1">
+        <div id="message-help" className="flex justify-between text-xs mt-1">
           <span className="text-[#13013f]/60 dark:text-gray-400">
             {minMessageLengthLabel}
           </span>
@@ -172,11 +209,17 @@ export const ContactForm = ({
         </div>
 
         {errors.message && (
-          <p className="text-red-500 text-xs mt-1">{errors.message}</p>
+          <p
+            id="message-error"
+            role="alert"
+            className="text-red-500 text-xs mt-1"
+          >
+            {errors.message}
+          </p>
         )}
       </div>
 
-      {/* botón */}
+      {/* submit */}
       <button
         type="submit"
         className="w-full flex items-center justify-center gap-2 bg-[#7d61f1] text-white py-2 rounded-md hover:opacity-90 transition dark:bg-[#5a3dd4]"
