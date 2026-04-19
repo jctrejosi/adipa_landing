@@ -21,17 +21,18 @@ WORKDIR /app
 
 # Copiar archivos de Composer primero (mejor caché)
 COPY composer.json composer.lock ./
-RUN composer install --no-dev --optimize-autoloader --no-scripts
+RUN composer install --no-dev --optimize-autoloader
 
 # Copiar el resto del código
 COPY . .
 
+RUN php artisan config:cache \
+ && php artisan route:cache \
+ && php artisan view:cache
+
 # Dar permisos a Laravel
 RUN chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
-
-# Ejecutar scripts de Composer
-RUN composer run-script post-autoload-dump
 
 # Instalar Node.js 20 LTS y compilar assets
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
