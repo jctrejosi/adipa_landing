@@ -10,9 +10,9 @@ El ejercicio consiste en construir una landing page de catálogo de cursos inspi
 
 ## Resultados
 
-versión a: <https://adipa-landing.onrender.com>
+versión a: <https://adipa-landing.vercel.app/>
 
-versión b: <https://adipa-landing.vercel.app/>
+versión b: <https://adipa-landing.onrender.com>
 
 ## Documentación de cada implementación
 
