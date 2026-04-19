@@ -31,7 +31,8 @@ RUN chown -R www-data:www-data storage bootstrap/cache \
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs \
     && npm install \
-    && npm run build
+    && npm run build \
+    && cp public/build/.vite/manifest.json public/build/manifest.json
 
 # nginx
 COPY docker/nginx.conf /etc/nginx/sites-enabled/default
