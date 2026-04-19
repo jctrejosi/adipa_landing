@@ -3,16 +3,14 @@
 import { useMemo, useState } from "react";
 import { Search } from "lucide-react";
 import { HeroSearchProps } from "./types";
+import { defaultProps } from "./defaultProps";
 
-export const HeroSearch = ({
-  title = "Cursos de Psicología con Certificado en 2026",
-  subtitle = "Vive la mejor experiencia de aprendizaje y potencia tus conocimientos a través de nuestros cursos y diplomados.",
-  placeholder = "",
-  initialValue = "",
-  suggestions = ["Autismo", "Wisc", "Ados", "Trauma", "ADI-R", "WAIS", "Peers"],
-  onSearch,
-  className = "",
-}: HeroSearchProps) => {
+export const HeroSearch = ({ onSearch, ...props }: HeroSearchProps) => {
+  const { title, subtitle, placeholder, initialValue, suggestions, className } =
+    {
+      ...defaultProps,
+      ...props,
+    };
   const [value, setValue] = useState(initialValue);
 
   const canSearch = useMemo(() => value.trim().length > 0, [value]);

@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { CourseCardProps, CourseListProps, SortValue } from "./types";
 import { formatPrice, normalizeText, parsePrice, parseDate } from "./helpers";
+import { defaultProps } from "./defaultProps";
 
 /* subcomponent */
 
@@ -159,17 +160,23 @@ const CourseCard = ({
 export const CourseList = ({
   courses,
   sortOptions,
-  title = "Cursos que te permitirán potenciar tu carrera.",
-  searchPlaceholder = "Buscar curso, docente, categoría...",
-  noResultsText = "No se encontraron cursos para la búsqueda actual.",
-  detailButtonLabel = "Ver detalle +",
-  liveLabel = "En vivo",
-  inProgressLabel = "• En progreso",
-  startLabel = "Inicio :",
-  allLabel = "Todos",
-  externalSearch = "",
   onSearchChange,
+  ...props
 }: CourseListProps) => {
+  const {
+    title,
+    searchPlaceholder,
+    noResultsText,
+    detailButtonLabel,
+    liveLabel,
+    inProgressLabel,
+    startLabel,
+    allLabel,
+    externalSearch,
+  } = {
+    ...defaultProps,
+    ...props,
+  };
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [sortValue, setSortValue] = useState<SortValue>("*");
   const triggerRef = useRef<HTMLButtonElement | null>(null);

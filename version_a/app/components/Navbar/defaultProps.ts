@@ -1,4 +1,6 @@
-export const discoverSections = [
+import { SectionGroup } from "./types";
+
+export const discoverList: SectionGroup[] = [
   {
     title: "Nosotros",
     items: [
@@ -52,7 +54,7 @@ export const discoverSections = [
   },
 ];
 
-export const resourcesSections = [
+export const resourcesList: SectionGroup[] = [
   {
     items: [
       { label: "Ebooks Gratuitos", href: "https://adipa.cl/recursos/ebooks/" },

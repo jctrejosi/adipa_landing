@@ -3,19 +3,16 @@
 import { useEffect, useRef } from "react";
 import { ChevronDown, X } from "lucide-react";
 import { Dropdown } from "../Dropdown";
-import { discoverSections, resourcesSections } from "./data";
-
-type Props = {
-  iconWhatsapp: string;
-  mobileOpen?: boolean;
-  onClose?: () => void;
-};
+import { discoverList, resourcesList } from "./defaultProps";
+import { NavbarProps } from "./types";
 
 export const Navbar = ({
   iconWhatsapp,
   mobileOpen = false,
   onClose,
-}: Props) => {
+  discoverSections = discoverList,
+  resourcesSections = resourcesList,
+}: NavbarProps) => {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
 
