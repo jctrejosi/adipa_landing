@@ -1,57 +1,52 @@
 FROM php:8.4-fpm
 
-# Instalar dependencias del sistema
+# deps sistema
 RUN apt-get update && apt-get install -y \
-    git \
-    unzip \
-    curl \
-    libzip-dev \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
+    git unzip curl \
+    libzip-dev libpng-dev libonig-dev libxml2-dev \
     nginx \
     && docker-php-ext-install pdo pdo_mysql zip gd mbstring exif pcntl bcmath \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Instalar Composer
+# composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /app
 
-# Copiar archivos de Composer primero (mejor caché)
+# 1. copiar solo composer (cache)
 COPY composer.json composer.lock ./
-RUN composer install --no-dev --optimize-autoloader
 
-# Copiar el resto del código
+# 2. instalar deps SIN scripts
+RUN composer install --no-dev --optimize-autoloader --no-scripts
+
+# 3. copiar código completo
 COPY . .
 
-RUN php artisan config:cache \
+# 4. ahora sí scripts de laravel
+RUN php artisan package:discover \
+ && php artisan config:cache \
  && php artisan route:cache \
  && php artisan view:cache
 
-# Dar permisos a Laravel
+# permisos
 RUN chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
-# Instalar Node.js 20 LTS y compilar assets
+# node + build
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs \
     && npm install \
     && npm run build
 
-# Configurar Nginx
+# nginx
 COPY docker/nginx.conf /etc/nginx/sites-enabled/default
 
-# Copiar script de inicio y dar permisos
+# start
 COPY docker/start.sh /start.sh
 RUN chmod +x /start.sh
 
-# Crear directorios necesarios
 RUN mkdir -p /var/log/nginx /var/lib/nginx /run/nginx
-
-# Limpiar caché de apt
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 EXPOSE 8000
 
