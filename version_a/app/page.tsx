@@ -10,8 +10,11 @@ import { CourseList } from "./components/CourseList";
 import { ContactForm } from "./components/ContactForm";
 import { Footer } from "./components/Footer";
 
-import { coursesData, groupsFilter, orderFilter, rankingFilter } from "./data";
 import { applyFilters } from "./helpers/applyFilters";
+import { coursesData } from "./data/coursesData";
+import { groupsFilter } from "./data/groupsFilter";
+import { orderFilter } from "./data/orderFilter";
+import { rankingFilter } from "./data/sortOptions";
 
 export const Home = () => {
   const [search, setSearch] = useState("");

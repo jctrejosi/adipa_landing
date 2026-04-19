@@ -26,6 +26,10 @@ RUN composer install --no-dev --optimize-autoloader --no-scripts
 # Copiar el resto del código
 COPY . .
 
+# Dar permisos a Laravel
+RUN chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
+
 # Ejecutar scripts de Composer
 RUN composer run-script post-autoload-dump
 
