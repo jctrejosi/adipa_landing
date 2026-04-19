@@ -169,6 +169,7 @@ export const Header = ({
 
           <button
             onClick={onCartClick}
+            aria-label="Carrito"
             className="relative bg-transparent border-none cursor-pointer text-[#704efd] dark:text-[#8b6eff]"
           >
             <ShoppingCart size={20} />
